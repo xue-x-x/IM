@@ -7,11 +7,13 @@
                     <li class="group-list-li" :class="{'activeClass': activeClass == index}" v-for="(item,index) in chatList" :key="index" @click="userClick(index,item)">
                         <div class="li-img" v-if="item.type == 'p2p'">
                             <img v-if="item.header" :src="url+item.header" alt="">
-                            <div v-else="">{{item.realName.slice(-2)}}</div>
+                            <div v-else="" class="li-img-header">{{item.realName.slice(-2)}}</div>
+                            <div v-if="item.unReadCount" class="unReadCount">{{item.unReadCount}}</div>
                         </div>
                         <div class="li-img" v-if="item.type == 'group'">
                             <img v-if="item.header" :src="url+item.header" alt="">
                             <div class="groupIcon" v-else=""><Icon type="ios-people" /></div>
+                            <div v-if="item.unReadCount" class="unReadCount">{{item.unReadCount}}</div>
                         </div>
                         <div>{{item.remark || item.realName}}</div>
                     </li>
@@ -22,7 +24,7 @@
                     <li class="group-list-li" v-for="(item,index) in searchChatLogList" :key="index">
                         <div class="li-img" v-if="item.type == 'p2p'">
                             <img v-if="item.header" :src="url+item.header" alt="">
-                            <div v-else="">{{item.realName.slice(-2)}}</div>
+                            <div v-else=""  class="li-img-header">{{item.realName.slice(-2)}}</div>
                         </div>
                         <div class="li-img" v-if="item.type == 'group'">
                             <img v-if="item.header" :src="url+item.header" alt="">
@@ -123,7 +125,6 @@
             console.log(json.list);
             self.chatList=json.list;
             self.userClick(0,json.list[0]);
-            console.log(self.chatList);
           })
           .catch((error) => {
             console.log(error)
@@ -136,10 +137,10 @@
       /* 点击好友 */
       userClick:function (index,n) {
         let self=this;
-        console.log(self.activeClass);
-        console.log(n);
+        self.$store.state.currentChat.unReadCount = 0;
+        self.currentChat = n;
         if(self.activeClass != index){
-          self.currentChat=[];
+          self.messageList=[];
           self.pageNo=0;
           self.isScroll=false;
           self.getPersonCardInfo(n);
@@ -148,15 +149,12 @@
       },
       /* 查看更多 */
       didScroll:function (n) {
-        console.log(n);
         this.pageNo=n.pageNo;
         this.isScroll=n.isScroll;
         this.getPersonCardInfo(n.userItem);
-        console.log(this.isScroll);
       },
       /* 获取聊天记录 */
       getPersonCardInfo:function (n) {
-        console.log(n)
         let self=this;
         let formData = new FormData();
         self.userItem=n;
@@ -175,13 +173,8 @@
           .then(response => response.json())
           .then(json => {
             self.isHaveMore=json.list.length >= 50 ? true : false;
-            let currentChat=[];
-            if(self.currentChat instanceof Array){
-              currentChat=self.currentChat;
-            }
-            self.currentChat=json.list.concat(currentChat);
-            self.$store.commit('setMessageList', self.currentChat);
-            console.log(self.isScroll);
+            self.messageList=json.list.concat(self.messageList);
+            self.$store.commit('setMessageList', self.messageList);
             if(!self.isScroll){
               self.$nextTick(() => {
                 imageLoad('message-box');
@@ -231,6 +224,19 @@
         self.$store.commit('sendMessage', data);
       },
     },
+   /* activated: function() {
+      let self = this;
+      // 当前聊天室
+      if (self.$route.query.chat) {
+        self.$store.commit('setCurrentChat', this.$route.query.chat);
+      }
+      // 重新设置chatList
+      self.$store.commit('setChatList', ChatListUtils.getChatList(self.$store.state.user.id));
+      // 每次滚动到最底部
+      this.$nextTick(() => {
+        imageLoad('message-box');
+      });
+    },*/
     created: function() {
       let self=this;
       self.user = self.$store.state.user.userId ? self.$store.state.user :JSON.parse(sessionStorage.getItem("user"));
@@ -238,18 +244,75 @@
 
     },
     mounted: function() {
-      /*let self = this;
+      let self = this;
+      let data={
+        communicationType:'login',
+        userId:self.user.userId,
+        fromType:'web'
+      };
       let websocketHeartbeatJs = new WebsocketHeartbeatJs({
         url: conf.getWsUrl()
       });
-      self.$store.commit('setWebsocket', websocketHeartbeatJs);
-      self.getWebSocket();*/
-      /*let websocketHeartbeatJs = new WebsocketHeartbeatJs({
-        url: conf.getWsUrl()
-      });
-      self.$store.commit('setWebsocket', websocketHeartbeatJs);*/
+      websocketHeartbeatJs.onopen = function() {
+        websocketHeartbeatJs.send(JSON.stringify(data));
+      };
+      websocketHeartbeatJs.onmessage = function(event) {
+        console.log(event);
+        let data = event.data;
+        let sendInfo = JSON.parse(data);
+        console.log(sendInfo);
+        // 真正的消息类型
+        winControl.flashIcon();
+        let message = sendInfo.data;
+        console.log(message);
+        let newList={
+          "pubTime": message.date,
+          "receiveColor": "17c295",
+          "receiveUserId": message.to,
+          "remark1": message.content,
+          "sendColor": "17c295",
+          "sendRealName": message.fromRealName,
+          "sendUserId": message.from,
+          "type":message.communicationType
+        };
+        console.log(newList);
+        // 发送给个人
+        if (message.communicationType === MessageTargetType.FRIEND) {
+          // 接受人是当前的聊天窗口
+          if (String(message.from) === String(self.$store.state.currentChat.id)) {
+            self.$store.commit('addMessage', newList);
+          } else if(String(message.from) === String(self.user.userId)){
+            self.$store.commit('addMessage', newList);
+            self.$store.commit('changPlace', newList);
+            self.activeClass=0;
+          } else {
+            self.$store.commit('setUnReadCount', newList);
 
-//      self.getWebSocket();
+          }
+        } else if (message.communicationType === MessageTargetType.CHAT_GROUP) {
+          // message.avatar = self.$store.state.chatMap.get(message.id);
+          // 接受人是当前的聊天窗口
+          if (String(message.to) === String(self.$store.state.currentChat.id)) {
+            if (String(message.from) !== self.$store.state.user.id) {
+              self.$store.commit('addMessage', newList);
+            } else if(String(message.from) === String(self.user.userId)){
+              self.$store.commit('addMessage', newList);
+              self.$store.commit('changPlace', newList);
+              self.activeClass=0;
+            }
+          }else {
+            self.$store.commit('setUnReadCount', newList);
+          }
+        }
+        winControl.flashFrame();
+        self.$store.commit('setLastMessage', newList);
+        // 每次滚动到最底部
+        self.$nextTick(() => {
+          imageLoad('message-box');
+        });
+      };
+      console.log(websocketHeartbeatJs);
+      self.$store.commit('setWebsocket', websocketHeartbeatJs);
     }
   }
 </script>
@@ -287,10 +350,10 @@
         width: 100%;
         height: calc(100% - 56px);
 
-    .group-list{
-        height: 100%;
-        overflow-y: auto;
-    }
+        .group-list{
+            height: 100%;
+            overflow-y: auto;
+        }
     .group-list-li{
         width: 100%;
         position: relative;
@@ -298,37 +361,51 @@
         line-height: 40px;
         font-size: 16px;
 
-    .li-img{
-        position: absolute;
-        top:50%;
-        left: 10px;
-        transform: translate(0,-50%);
-        width: 45px;
-        height: 45px;
-    img{
-        width: 100%;
-        height: 100%;
-        border-radius: 3px;
-    }
-    >div{
-        width: 100%;
-        height: 100%;
-        background-color: #3498db;
-        color: #fff;
-        border-radius: 50%;
-        text-align: center;
-        font-size: 14px;
-    }
-    .groupIcon{
-        width: 100%;
-        height: 100%;
-        background-color: #1abc9c;
-        color: #fff;
-        border-radius: 5px;
-        text-align: center;
-        font-size: 32px;
-    }
-    }
+        .li-img{
+            position: absolute;
+            top:50%;
+            left: 10px;
+            transform: translate(0,-50%);
+            width: 45px;
+            height: 45px;
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 3px;
+            }
+            .li-img-header{
+                width: 100%;
+                height: 100%;
+                background-color: #3498db;
+                color: #fff;
+                border-radius: 50%;
+                text-align: center;
+                font-size: 14px;
+            }
+            .groupIcon{
+                width: 100%;
+                height: 100%;
+                background-color: #1abc9c;
+                color: #fff;
+                border-radius: 5px;
+                text-align: center;
+                font-size: 32px;
+            }
+            .unReadCount{
+                position: absolute;
+                right: -5px;
+                top: -5px;
+                padding: 0 5px;
+                min-width: 16px;
+                height: 16px;
+                line-height: 15px;
+                border-radius: 8px;
+                background-color: red;
+                text-align: center;
+                font-size: 10px;
+                color: #fff;
+            }
+        }
     }
     .group-list-li:hover{
         background-color: #dbdada;

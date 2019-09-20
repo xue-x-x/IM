@@ -55,15 +55,13 @@ export function dateStr(date) {
  * 聊天会话
  */
 export class Chat {
-  constructor(id, name, avatar, unReadCount, lastMessage, mobile, email, type) {
+  constructor(id, realName, fromRealName, msg,  type, chatTime) {
     this.id = id;
-    this.name = name;
-    this.avatar = avatar;
-    this.unReadCount = unReadCount;
-    this.lastMessage = lastMessage;
-    this.mobile = mobile;
-    this.email = email;
+    this.realName = realName;
+    this.fromRealName = fromRealName;
+    this.msg = msg;
     this.type = type;
+    this.chatTime = chatTime;
   }
 }
 
@@ -321,8 +319,8 @@ export const MessageInfoType = {
 };
 //信息的目标类型 FRIEND 私聊 、CHAT_GROUP 群聊
 export const MessageTargetType = {
-  FRIEND: '0',
-  CHAT_GROUP: '1'
+  FRIEND: 'p2p',
+  CHAT_GROUP: 'group'
 };
 
 /**

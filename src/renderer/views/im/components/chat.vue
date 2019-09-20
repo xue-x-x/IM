@@ -124,7 +124,7 @@
               "sendRealName": currentUser.userName,
               "sendUserId": currentUser.userId
             };
-//            let currentMessage={"communicationType":"p2p","content":"VB那就12345","from":"2","fromRealName":"楼下小黑","to":"1","date":"","msgId":"","color":"17c295","header":"null"}
+            console.log(self.messageList);
             self.send(currentMessage,listMessage);
           }
         }
@@ -136,8 +136,10 @@
         let currentUser = self.$store.state.user;
         let newList={};
         newListMessage.pubTime=self.formatDateTime(new Date(newListMessage.pubTime));
-        /*self.$store.commit('sendMessage', message);*/
-        let websocket=self.$store.state.websocket;
+        self.$store.commit('sendMessage', message);
+        self.messageContent = '';
+      /*  self.$store.commit('addMessage', newList);*/
+       /* let websocket=self.$store.state.websocket;
         websocket.send(JSON.stringify(message));
 
         websocket.onmessage = function (evt) {
@@ -166,7 +168,7 @@
           });
 
           self.messageContent = '';
-        };
+        };*/
         // 每次滚动到最底部
         self.$nextTick(() => {
           imageLoad('message-box');
@@ -179,9 +181,11 @@
     computed: {
       messageList: {
         get: function() {
+          console.log(this.$store.state.messageList);
           return this.$store.state.messageList;
         },
         set: function(messageList) {
+          console.log(messageList);
           this.$store.commit('setMessageList', messageList);
         }
       }

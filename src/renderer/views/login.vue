@@ -62,7 +62,7 @@
             if (response.code === '0') {
               self.$store.commit('setUser', response);
               self.user=response;
-              self.getWebSocket();
+              /*self.getWebSocket();*/
               self.$router.push({
                 path: '/index/userBox',
                 params: {}
@@ -105,9 +105,9 @@
         url: conf.getWsUrl()
       });
       self.$store.commit('setWebsocket', websocketHeartbeatJs)*/
-      var wsServer = 'ws://58.218.203.29:2525'; //服务器地址
+      /*var wsServer = 'ws://58.218.203.29:2525'; //服务器地址
       var websocket = new WebSocket(wsServer);
-      self.$store.commit('setWebsocket', websocket);
+      self.$store.commit('setWebsocket', websocket);*/
     }
     
   }
