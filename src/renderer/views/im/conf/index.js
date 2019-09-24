@@ -16,6 +16,7 @@ export default {
   groupInfo:'/info/phone/GroupInfo',
   myFriendChatLogList:'/info/phone/mchat/getMyFriendChatLogList',
   searchFromFriendsByNo:'/info/phone/searchFromFriendsByNo',
+  uploadingUrl:'/info/phone/mchat/uploadImg',
   ws_protocol: 'ws',
   url: 'http://58.218.203.29',
   getHostUrl: function() {
@@ -57,6 +58,10 @@ export default {
   //从好友中查询
   getSearchFromFriendsByNoUrl: function() {
     return this.getHostUrl() + this.searchFromFriendsByNo;
+  },
+  //上传图片、文件
+  getUploadingUrl: function() {
+    return this.getHostUrl() + this.uploadingUrl;
   },
   getInitUrl: function() {
     return this.getHostUrl() + this.init;

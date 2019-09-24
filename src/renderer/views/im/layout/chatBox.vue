@@ -4,7 +4,7 @@
             <Search :isUser="isUser" :list="chatList" @showSearch="showSearch" @searchUser="searchUser"></Search>
             <div class="group-box" v-if="!showSearchDiv">
                 <ul class="group-list">
-                    <li class="group-list-li" :class="{'activeClass': activeClass == index}" v-for="(item,index) in chatList" :key="index" @click="userClick(index,item)">
+                    <li class="group-list-li" :class="{'activeClass': item.pitchOn}" v-for="(item,index) in chatList" :key="index" @click="userClick(index,item)">
                         <div class="li-img" v-if="item.type == 'p2p'">
                             <img v-if="item.header" :src="url+item.header" alt="">
                             <div v-else="" class="li-img-header">{{item.realName.slice(-2)}}</div>
@@ -57,7 +57,8 @@
     logout,
     MessageInfoType,
     MessageTargetType,
-    timeoutFetch
+    timeoutFetch,
+    excludeSpecial
   } from '../utils/chatUtils';
   import HttpApiUtils from '../utils/HttpApiUtils';
 
@@ -136,16 +137,37 @@
       },
       /* 点击好友 */
       userClick:function (index,n) {
+        console.log(n);
         let self=this;
-        self.$store.state.currentChat.unReadCount = 0;
-        self.currentChat = n;
-        if(self.activeClass != index){
+        let chatList=self.chatList;
+        if(!self.chatList[index].pitchOn){
           self.messageList=[];
           self.pageNo=0;
           self.isScroll=false;
           self.getPersonCardInfo(n);
+          this.$store.commit('setShowFace', false);
         }
+        let data={
+          "communicationType":"readed",
+          "content":n.type,
+          "from":n.id,
+          "fromRealName":n.remark || n.realName,
+          "to":self.user.userId,
+          "date":"",
+          "msgId":"",
+          "color":""
+        };
+        if(n.unReadCount){
+          self.$store.commit('sendMessage', data);
+        }
+        chatList.map(function (item) {
+          item.pitchOn=false;
+        });
+        chatList[index].pitchOn=true;
+        self.chatList=chatList;
         self.activeClass=index;
+        self.currentChat = n;
+
       },
       /* 查看更多 */
       didScroll:function (n) {
@@ -257,19 +279,19 @@
         websocketHeartbeatJs.send(JSON.stringify(data));
       };
       websocketHeartbeatJs.onmessage = function(event) {
-        console.log(event);
         let data = event.data;
         let sendInfo = JSON.parse(data);
         console.log(sendInfo);
         // 真正的消息类型
         winControl.flashIcon();
         let message = sendInfo.data;
-        console.log(message);
+        if(!message) return false;
         let newList={
           "pubTime": message.date,
           "receiveColor": "17c295",
           "receiveUserId": message.to,
-          "remark1": message.content,
+          "remark1": excludeSpecial(message.content),
+//          "remark1": "<img src=\"http://58.218.203.29/im/emoj/j_0036.gif\">",
           "sendColor": "17c295",
           "sendRealName": message.fromRealName,
           "sendUserId": message.from,
@@ -284,7 +306,7 @@
           } else if(String(message.from) === String(self.user.userId)){
             self.$store.commit('addMessage', newList);
             self.$store.commit('changPlace', newList);
-            self.activeClass=0;
+            self.chatList[0].pitchOn=true;
           } else {
             self.$store.commit('setUnReadCount', newList);
 
@@ -298,7 +320,7 @@
             } else if(String(message.from) === String(self.user.userId)){
               self.$store.commit('addMessage', newList);
               self.$store.commit('changPlace', newList);
-              self.activeClass=0;
+              self.chatList[0].pitchOn=true;
             }
           }else {
             self.$store.commit('setUnReadCount', newList);

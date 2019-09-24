@@ -109,7 +109,7 @@
       var websocket = new WebSocket(wsServer);
       self.$store.commit('setWebsocket', websocket);*/
     }
-    
+
   }
 </script>
 

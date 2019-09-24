@@ -29,9 +29,14 @@ export default new Vuex.Store({
     //群组列表
     chatGroupList: [],
     //刷新token 的定时器
-    flushTokenTimerId : null
+    flushTokenTimerId : null,
+    //是否显示表情
+    showFace:false,
   },
   mutations: {
+    setShowFace: function(state, showFace) {
+      state.showFace = showFace;
+    },
     setFlushTokenTimerId: function(state, flushTokenTimerId) {
       state.flushTokenTimerId = flushTokenTimerId;
     },
@@ -47,7 +52,6 @@ export default new Vuex.Store({
       state.tokenStatus = tokenStatus;
     },
     setUser: function(state, user) {
-      console.log(user);
       state.user = user;
       sessionStorage.setItem("user", JSON.stringify(user));
     },
@@ -62,7 +66,6 @@ export default new Vuex.Store({
     },
     setWebsocket: function(state, websocket) {
       state.websocket = websocket;
-      console.log(state.websocket);
     },
     // 发送给服务器
     sendMessage: function(state, message) {
@@ -70,12 +73,10 @@ export default new Vuex.Store({
         code: MessageInfoType.MSG_MESSAGE,
         message: message
       };
-      console.log(state.websocket);
       state.websocket.send(JSON.stringify(message));
     },
     // 退出登录
     closeConnect: function(state) {
-      console.log(state.websocket);
       state.websocket.heartReset();
       state.websocket.close();
     },
@@ -87,7 +88,6 @@ export default new Vuex.Store({
     // 保存到内存
     addMessage: function(state, message) {
       // message.content = transform(message.content);
-      console.log(message);
       state.messageList.push(message);
       state.messageListMap.set(message.receiveUserId, state.messageList);
     },
@@ -107,7 +107,6 @@ export default new Vuex.Store({
       state.chatList = tempChatList;
     },
     setMessageList: function(state, messageList) {
-      console.log(messageList);
       state.messageList = messageList;
     },
     setMessageListMap: function(state, messageListMap) {
@@ -115,11 +114,9 @@ export default new Vuex.Store({
     },
     addUnreadMessage: function(state, message) {
       message.content = transform(message.content);
-      console.log(message);
       if (message.type === 'p2p') {
         // 从内存中取聊天信息
         let cacheMessages = state.messageListMap.get(message.sendUserId);
-        console.log(cacheMessages);
         if (cacheMessages) {
           cacheMessages.push(message);
         } else {
