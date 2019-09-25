@@ -128,11 +128,33 @@ function scrollBottom(id) {
  * 去掉转义字符
  * @param id 容器id
  */
-export function excludeSpecial(s) {
+export function excludeSpecial(content) {
   // 去掉转义字符
-  s = s.replace(/[\'\\\n\r\t]/g, '');
-  return s;
+  content = content.replace(/[\'\\\n\r\t]/g, '');
+  return content;
 }
+
+export function transform(content) {
+  content = content.replace(/[\'\\\n\r\t]/g, '');
+  let type=content.split('?')[0];
+  let href=content.split('?')[1];
+  let time=content.split('?')[2];
+  if(type == 'rrtFile'){
+    console.log(111);
+    return '<a class="message-file" href="' +href+ '"><i class="ivu-icon ivu-icon-md-arrow-down"></i>' + href + '</a>';
+  }else if(type == 'rrtaudio'){
+    // return '<Maudio src="'+href+'"></Maudio>'
+    return {
+      url:href,
+      type:'rrtaudio',
+      time:time
+    }
+  }else {
+    return content;
+  }
+
+}
+
 export let faceUtils = {
   alt: [
     '[微笑]',
@@ -229,7 +251,7 @@ export let faceUtils = {
   }*/
 };
 
-export function transform(content) {
+/*export function transform(content) {
   // 支持的html标签
   let html = function(end) {
     return new RegExp('\\n*\\[' + (end || '') + '(code|pre|div|span|p|table|thead|th|tbody|tr|td|ul|li|ol|li|dl|dt|dd|h2|h3|h4|h5)([\\s\\S]*?)]\\n*', 'g');
@@ -281,7 +303,7 @@ export function transform(content) {
       .replace(/\n/g, '<br>'); // 转义换行
   }
   return content;
-}
+}*/
 
 export const ChatListUtils = {
   listKey: '_chatList',

@@ -87,7 +87,7 @@ export default new Vuex.Store({
     },
     // 保存到内存
     addMessage: function(state, message) {
-      // message.content = transform(message.content);
+      message.remark1 = transform(message.remark1);
       state.messageList.push(message);
       state.messageListMap.set(message.receiveUserId, state.messageList);
     },

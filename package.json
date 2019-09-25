@@ -55,6 +55,7 @@
     "iview": "^3.1.0",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
+    "vue-mobile-audio": "^0.1.3",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
     "vuex-electron": "^1.0.0"

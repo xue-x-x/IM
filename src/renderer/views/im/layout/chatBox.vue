@@ -58,7 +58,8 @@
     MessageInfoType,
     MessageTargetType,
     timeoutFetch,
-    excludeSpecial
+    excludeSpecial,
+    transform
   } from '../utils/chatUtils';
   import HttpApiUtils from '../utils/HttpApiUtils';
 
@@ -196,6 +197,9 @@
           .then(json => {
             self.isHaveMore=json.list.length >= 50 ? true : false;
             self.messageList=json.list.concat(self.messageList);
+            self.messageList.forEach((item,index,array)=>{
+              item.remark1=transform(item.remark1);
+            });
             self.$store.commit('setMessageList', self.messageList);
             if(!self.isScroll){
               self.$nextTick(() => {
@@ -285,19 +289,20 @@
         // 真正的消息类型
         winControl.flashIcon();
         let message = sendInfo.data;
-        if(!message) return false;
+        if(!message || sendInfo.msg.indexOf('已读') != -1) return false;
+        /*let content=message.content;
+        content=transform(content);*/
         let newList={
           "pubTime": message.date,
           "receiveColor": "17c295",
           "receiveUserId": message.to,
-          "remark1": excludeSpecial(message.content),
-//          "remark1": "<img src=\"http://58.218.203.29/im/emoj/j_0036.gif\">",
+          "remark1": transform(message.content),
           "sendColor": "17c295",
           "sendRealName": message.fromRealName,
           "sendUserId": message.from,
           "type":message.communicationType
         };
-        console.log(newList);
+
         // 发送给个人
         if (message.communicationType === MessageTargetType.FRIEND) {
           // 接受人是当前的聊天窗口

@@ -20,19 +20,20 @@
                             <cite v-if="item.sendRealName != user.userName">{{item.sendRealName}}<i>{{item.pubTime}}</i></cite>
                             <cite v-else=""><i>{{item.pubTime}}</i>{{item.sendRealName}}</cite>
                         </div>
-                        <div class="chat-text">
+                        <div v-if="!item.remark1.type" class="chat-text">
                             <pre v-html="item.remark1"></pre>
                         </div>
+                        <div v-else="" class="chat-text">
+                            <pre><maudio :src="item.remark1.url" :time="item.remark1.time"></maudio></pre>
+                        </div>
                     </li>
-                    <!--<li class="chat-records-li chat-mine">
+                   <!-- <li class="chat-records-li chat-mine">
                         <div class="chat-user">
                             <img src="../../../assets/1.jpg" alt="">
                             <cite><i>2019-09-16 14:59:28</i>管理员</cite>
                         </div>
                         <div class="chat-text">
-                            <pre>
-                                <a href="http://58.218.203.29/im/chatImg/20190924111028442_2470957新建 DOC 文档.doc">文档</a>
-                            </pre>
+                            <pre><maudio src="http://58.218.203.29/im/chatImg/1566871441328.mp3"></maudio></pre>
                         </div>
                     </li>-->
                 </ul>
@@ -80,6 +81,20 @@
                 <div class="chat-tool-send" @click="mineSend">发送</div>
             </div>
         </div>
+        <Modal
+                v-model="modal"
+                title="请确认发送"
+                width="300"
+                :mask-closable="false"
+                @on-ok="ok"
+                @on-cancel="cancel">
+            <div class="modal-alert">
+                <div>
+                    <img src="/static/document.png" alt="">
+                </div>
+                <div>{{modalName}}</div>
+            </div>
+        </Modal>
     </div>
     <!--<someComponent></someComponent>-->
 </template>
@@ -89,10 +104,12 @@
   const { imageLoad, transform, ChatListUtils } = require('../utils/chatUtils');
   import conf from '../conf'
   import Faces from './faces.vue';
+  import maudio from './audio.vue';
 //  import WebsocketHeartbeatJs from '../utils/WebsocketHeartbeatJs.js';
   export default {
     components: {
-      Faces
+      Faces,
+      maudio
     },
     name: "",
     props:{
@@ -113,10 +130,35 @@
         action: '',
         headers: {
           'Access-Control-Allow-Origin': '*'
-        }
+        },
+        modal:false,
+        modalName:'',
+        modalUrl:'',
+        audioUrl:'http://58.218.203.29/im/chatImg/1566871441328.mp3'
       }
     },
     methods: {
+      ok () {
+        let self=this;
+        console.log(self.$store.state.user);
+        let currentUser = self.user;
+        let currentMessage = {
+          "communicationType":self.userItem.type,
+          "content":'rrtFile?'+self.url+self.modalUrl,
+          "from":currentUser.userId,
+          "fromRealName":currentUser.userName,
+          "to":self.userItem.id,
+          "date":"",
+          "msgId":"",
+          "color":"17c295",
+          "header":currentUser.headImg
+        };
+        let content='rrtFile?'+self.url+self.modalUrl;
+        self.send(currentMessage);
+      },
+      cancel () {
+        this.modal=false;
+      },
       /* 下拉加载更多 */
       didScroll:function () {
         let self=this;
@@ -252,7 +294,7 @@
         // 无论如何都要记录最后光标对象
         lastEditRange = selection.getRangeAt(0)
       },
-      //内容转换
+      //表情转换
       transition:function () {
         var msg1=this.messageContent;
         var emojiPath=this.url+"/im/emoj/";
@@ -306,8 +348,10 @@
           // 文件
           console.log(self.imgFormat.indexOf(suffix));
           if (self.imgFormat.indexOf(suffix) === -1) {
-//            this.messageContent = this.messageContent + '<p>rrtFile?'+self.url+path+'</p>';
-            this.messageContent = this.messageContent + '<p>rrtFile?'+self.url+path+'</p>';
+            //显示弹窗
+            self.modal=true;
+            self.modalName=file.name;
+            self.modalUrl=path;
           }
           // 图片
           else {
@@ -336,13 +380,8 @@
       mineSend() {
         debugger
         let self = this;
-        let currentUser = self.$store.state.user;
-        currentUser=self.user;
-        console.log(self.userItem);
-        console.log(self.messageContent);
-//        return
+        let currentUser = self.user;
         let content = self.messageContent;
-//        return
         if (content !== '' && content !== '\n') {
           if (content.length > 2000) {
             self.openMessage('不能超过2000个字符');
@@ -435,18 +474,36 @@
       }
     },
     mounted: function() {
-      console.log(1111);
       // 每次滚动到最底部
       this.$nextTick(() => {
         imageLoad('message-box');
       });
       this.action=conf.getUploadingUrl();
+//      let content='rrtFile?http://58.218.203.29/im/chatImg/20190924161159093_6912566新建 DOC 文档.doc';
+      let content='rrtaudio?http://58.218.203.29/im/chatImg/1568798386907.mp3?4';
+//      transform(content)
+      console.log(transform(content));
 //      console.log(conf.getUploadingUrl());
     }
   }
 </script>
 
 <style lang="scss" scoped>
+    /* 文件弹窗 */
+    .modal-alert{
+        margin: 0 auto;
+        width: 90%;
+        text-align: center;
+        font-size: 16px;
+        img{
+            width: 100px;
+        }
+        div{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
     .demo-spin-icon-load{
         animation: ani-demo-spin 1s linear infinite;
     }
@@ -537,6 +594,7 @@
                     display: inline-block;
                     vertical-align: top;
                     font-size: 14px;
+                    text-align: left;
                     &:after {
                          content: '';
                          position: absolute;
