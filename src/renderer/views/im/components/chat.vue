@@ -21,6 +21,7 @@
                             <cite v-else=""><i>{{item.pubTime}}</i>{{item.sendRealName}}</cite>
                         </div>
                         <div v-if="!item.remark1.type" class="chat-text">
+                            <!--<pre v-html="item.remark1" v-on:click="openImageProxy($event)"></pre>-->
                             <pre v-html="item.remark1"></pre>
                         </div>
                         <div v-else="" class="chat-text">
@@ -134,7 +135,6 @@
         modal:false,
         modalName:'',
         modalUrl:'',
-        audioUrl:'http://58.218.203.29/im/chatImg/1566871441328.mp3'
       }
     },
     methods: {
@@ -265,7 +265,6 @@
           // 光标对象的范围界定为新建的表情节点
           range.selectNodeContents(emojiText)
           // 光标位置定位在表情节点的最大长度
-//          debugger
           range.setStart(emojiText, emojiText.length)
           // 使光标开始和光标结束重叠
           range.collapse(true)
@@ -355,7 +354,8 @@
           }
           // 图片
           else {
-            this.messageContent = this.messageContent + '<img class="message-img" src="'+self.url+path+'" style="max-width: 160px">';
+//            this.messageContent = this.messageContent + '<img class="message-img" src="'+self.url+path+'" style="max-width: 160px">';
+            this.messageContent = this.messageContent + '<img class="message-img" preview="1" src="'+self.url+path+'" style="max-width: 160px">';
             console.log(this.messageContent);
           }
           this.$Loading.finish();
@@ -367,18 +367,8 @@
         this.$Loading.finish();
         this.$Message.error('上传错误！');
       },
-      // 附件和图片点击展开
-      openImageProxy: function(event) {
-        event.preventDefault();
-        if (event.target.nodeName === 'IMG') {
-          winControl.openURL(event.target.src);
-        } else if (event.target.className === 'message-file') {
-          winControl.openURL(event.target.href);
-        }
-      },
       // 本人发送信息
       mineSend() {
-        debugger
         let self = this;
         let currentUser = self.user;
         let content = self.messageContent;

@@ -10,7 +10,10 @@ import 'iview/dist/styles/iview.css';    // 使用 CSS
 import VueParticles from 'vue-particles';
 import { dateStr, formatDateTime } from './views/im/utils/chatUtils.js';
 
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
 
+Vue.use(preview);
 Vue.use(iView);
 Vue.use(VueParticles);
 
