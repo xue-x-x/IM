@@ -7,7 +7,7 @@
                     <li class="group-list-li" :class="{'activeClass': item.pitchOn}" v-for="(item,index) in chatList" :key="index" @click="userClick(index,item)">
                         <div class="li-img" v-if="item.type == 'p2p'">
                             <img v-if="item.header" :src="url+item.header" alt="">
-                            <div v-else="" class="li-img-header">{{item.realName.slice(-2)}}</div>
+                            <div v-else="" class="li-img-header">{{item.remark && item.remark.slice(-2) || item.realName.slice(-2)}}</div>
                             <div v-if="item.unReadCount" class="unReadCount">{{item.unReadCount}}</div>
                         </div>
                         <div class="li-img" v-if="item.type == 'group'">
@@ -18,13 +18,14 @@
                         <div>{{item.remark || item.realName}}</div>
                     </li>
                 </ul>
+
             </div>
             <div class="group-box" v-else="">
                 <ul class="group-list" v-if="searchChatLogList">
                     <li class="group-list-li" v-for="(item,index) in searchChatLogList" :key="index">
                         <div class="li-img" v-if="item.type == 'p2p'">
                             <img v-if="item.header" :src="url+item.header" alt="">
-                            <div v-else=""  class="li-img-header">{{item.realName.slice(-2)}}</div>
+                            <div v-else=""  class="li-img-header">{{item.remark && item.remark.slice(-2) || item.realName.slice(-2)}}</div>
                         </div>
                         <div class="li-img" v-if="item.type == 'group'">
                             <img v-if="item.header" :src="url+item.header" alt="">
@@ -37,7 +38,7 @@
         </div>
         <div class="chat-box">
             <Top></Top>
-            <Chat :chat="currentChat" :user="user" :userItem="userItem" :isHaveMore="isHaveMore" @didScroll="didScroll"></Chat>
+            <Chat :chat="currentChat" :user="user" :userItem="userItem" :isHaveMore="isHaveMore" @didScroll="didScroll" @getMyChatLogList="getMyChatLogList"></Chat>
         </div>
     </div>
     <!--<someComponent></someComponent>-->
@@ -116,12 +117,11 @@
     },
     methods: {
       /* 获取聊天列表 */
-      getMyChatLogList:function (userId) {
+      getMyChatLogList:function () {
         let self=this;
-        console.log(userId);
         let formData = new FormData();
         // 请求参数 ('key',value)
-        formData.set('userId', userId);
+        formData.set('userId', self.user.userId);
         fetch(conf.getMyChatLogListUrl(), {
           method: 'POST',
           model: 'cros', //跨域
@@ -154,6 +154,7 @@
           self.pageNo=0;
           self.isScroll=false;
           self.getPersonCardInfo(n);
+          self.getPersonalDetails(n);
           this.$store.commit('setShowFace', false);
         }
         let data={
@@ -180,12 +181,12 @@
       },
       /* 切换好友/群 */
       userChang:function (index,n) {
-        console.log(n);
         let self=this;
         self.messageList=[];
         self.pageNo=0;
         self.isScroll=false;
         self.getPersonCardInfo(n);
+        self.getPersonalDetails(n);
         this.$store.commit('setShowFace', false);
         let data={
           "communicationType":"readed",
@@ -208,15 +209,40 @@
         this.isScroll=n.isScroll;
         this.getPersonCardInfo(n.userItem);
       },
+      //获取个人信息
+      getPersonalDetails:function (n) {
+        let self=this;
+        let userItem=n;
+        let formData = new FormData();
+        formData.set('userId', self.user.userId);
+        formData.set('otherId', userItem.id);
+
+        fetch(conf.getPersonCardInfoUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            let data=Object.assign(json,userItem);
+            self.userItem=data;
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      },
       /* 获取聊天记录 */
       getPersonCardInfo:function (n) {
         let self=this;
         let formData = new FormData();
-        self.userItem=n;
+        let userItem=n;
         formData.set('curUserId', self.user.userId);
-        formData.set('otherId', self.userItem.id);
+        formData.set('otherId', userItem.id);
         formData.set('pageNo', self.pageNo);
-        formData.set('type', self.userItem.type);
+        formData.set('type', userItem.type);
         fetch(conf.getMyFriendChatLogListUrl(), {
           method: 'POST',
           model: 'cros', //跨域
@@ -299,9 +325,7 @@
     created: function() {
       let self=this;
       self.user = self.$store.state.user.userId ? self.$store.state.user :JSON.parse(sessionStorage.getItem("user"));
-      self.getMyChatLogList(self.user.userId);
-      console.log('111');
-
+      self.getMyChatLogList();
     },
     mounted: function() {
       let self = this;

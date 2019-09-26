@@ -2,7 +2,7 @@
     <div class="chat-message">
         <div class="chat-title">
             <div>{{userItem.remark || userItem.realName}}</div>
-            <div><Icon type="ios-more" /></div>
+            <div class="ios-more" @click="unfold"><Icon type="ios-more" /></div>
         </div>
         <div class="chat-content">
             <div class="chat-records" id="message-box"  @scroll="didScroll">
@@ -16,8 +16,9 @@
                     <li class="chat-records-li" :class="{'chat-mine': item.sendRealName == user.userName}" v-for="(item,index) in messageList" :key="index">
                         <div class="chat-user">
                             <img v-if="item.sendHeader" :src="url+item.sendHeader" alt="">
-                            <div v-else="">{{item.sendRealName.slice(-2)}}</div>
-                            <cite v-if="item.sendRealName != user.userName">{{item.sendRealName}}<i>{{item.pubTime}}</i></cite>
+                            <div v-else-if="item.sendRealName == user.userName">{{item.sendRealName.slice(-2)}}</div>
+                            <div v-else="">{{item.remark && item.remark.slice(-2) || item.sendRealName.slice(-2)}}</div>
+                            <cite v-if="item.sendRealName != user.userName">{{item.remark || item.sendRealName}}<i>{{item.pubTime}}</i></cite>
                             <cite v-else=""><i>{{item.pubTime}}</i>{{item.sendRealName}}</cite>
                         </div>
                         <div v-if="!item.remark1.type" class="chat-text">
@@ -73,7 +74,6 @@
                             <Icon type="ios-folder-open-outline"></Icon>
                         </Upload>
                     </div>
-                    <Icon type="ios-text-outline" title="聊天记录"/>
                 </div>
                 <div class="chat-tool-textarea">
                     <!--<textarea v-model="messageContent" @keyup.enter="mineSend()"></textarea>-->
@@ -96,6 +96,34 @@
                 <div>{{modalName}}</div>
             </div>
         </Modal>
+        <div class="chat-drawer">
+            <Drawer :closable="false" v-model="p2p">
+                <!--<p>我是好友</p>-->
+                <div class="chat-drawer-title">
+                    <div class="chat-drawer-header">
+                        <img v-if="userItem.header" :src="url+userItem.header" alt="">
+                        <div v-else>{{userItem.remark && userItem.remark.slice(-2) || userItem.realName && userItem.realName.slice(-2)}}</div>
+                    </div>
+                    <div class="chat-drawer-name">{{userItem.remark || userItem.realName}}</div>
+                </div>
+                <div class="chat-drawer-switch" v-if="userItem.status == 2">
+                    <p>置顶消息</p>
+                    <i-switch v-model="roofButoon" @on-change="roofChange" />
+                </div>
+                <div class="chat-drawer-switch">
+                    <p>好友状态</p>
+                    <Button v-if="userItem.status == 2" type="error">删除好友</Button>
+                    <Button v-else-if="userItem.status == 1" type="warning">已经申请</Button>
+                    <Button v-else="" type="success">添加好友</Button>
+                </div>
+
+            </Drawer>
+            <Drawer :closable="false" v-model="group">
+                <p>我是群</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Drawer>
+        </div>
     </div>
     <!--<someComponent></someComponent>-->
 </template>
@@ -135,10 +163,70 @@
         modal:false,
         modalName:'',
         modalUrl:'',
+        p2p:false,
+        group:false,
+        roofButoon:false,
+        noDisturb:false
       }
     },
     methods: {
-      ok () {
+      changeSwitch:function (status) {
+        this.$Message.info('开关状态：' + status);
+      },
+      //展开好友、群信息
+      unfold:function () {
+//        this.p2p=true;
+        if(this.userItem.type == 'p2p'){
+          this.p2p=true
+        }else {
+          this.p2p=true
+        }
+        console.log(this.userItem);
+      },
+      //置顶消息按钮
+      roofChange:function (status) {
+        console.log(status);
+        console.log(this.userItem);
+        return
+        let self=this;
+        let formData = new FormData();
+        // 请求参数 ('key',value)
+        formData.set('userId', self.user.userId);
+        formData.set('otherId', self.userItem.id);
+        formData.set('msgTop', 1);
+        fetch(conf.getMsgTopChangeUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            console.log(json);
+            if(json.sign){
+              self.$emit('getMyChatLogList',self.user.userId)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      },
+      //消息免打扰按钮
+      noDisturbChang:function (status) {
+        this.$Message.info('开关状态：' + status);
+      },
+      //设置置顶
+      setRoof:function () {
+
+      },
+      //设置免打扰
+      setNoDisturb:function () {
+
+      },
+      //确认发送文档
+      ok:function(){
         let self=this;
         console.log(self.$store.state.user);
         let currentUser = self.user;
@@ -156,7 +244,8 @@
         let content='rrtFile?'+self.url+self.modalUrl;
         self.send(currentMessage);
       },
-      cancel () {
+      //取消发送文档
+      cancel:function(){
         this.modal=false;
       },
       /* 下拉加载更多 */
@@ -417,7 +506,6 @@
     computed: {
       messageList: {
         get: function() {
-          console.log(this.$store.state.messageList);
           return this.$store.state.messageList;
         },
         set: function(messageList) {
@@ -479,6 +567,44 @@
 </script>
 
 <style lang="scss" scoped>
+    /* 展开好友、群信息 */
+    .chat-drawer-title{
+        padding: 30px 0 20px;
+        text-align: center;
+        border-bottom: 1px solid #e8e8e8;
+        .chat-drawer-header{
+            margin: 0 auto;
+            width: 45px;
+            height: 45px;
+            line-height: 45px;
+            >img{
+                width: 100%;
+                height: 100%;
+                border-radius: 3px;
+            }
+            >div{
+                width: 100%;
+                height: 100%;
+                background-color: #3498db;
+                color: #fff;
+                border-radius: 50%;
+                text-align: center;
+                font-size: 14px;
+            }
+        }
+        .chat-drawer-name{
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    }
+    .chat-drawer-switch{
+        margin-top: 25px;
+        font-size: 16px;
+        color: #999;
+        p{
+            margin-bottom: 5px;
+        }
+    }
     /* 文件弹窗 */
     .modal-alert{
         margin: 0 auto;
@@ -512,6 +638,9 @@
         font-size: 20px;
         border-bottom: 1px solid #e7e7e7;
         color: #000;
+        .ios-more{
+            cursor: pointer;
+        }
     }
     .chat-content{
         /*padding: 0 30px;*/

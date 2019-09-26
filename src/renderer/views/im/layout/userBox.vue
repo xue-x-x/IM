@@ -7,7 +7,8 @@
                     <li class="group-list-li" :class="{'activeClass': activeClass == index}" v-for="(item,index) in userFriendList" :key="index" @click="userClick(index,item)">
                         <div class="li-img">
                             <img v-if="item.header" :src="url+item.header" alt="">
-                            <div v-else="">{{item.friendName.slice(-2)}}</div>
+                            <div v-else="">{{item.remark && item.remark.slice(-2) || item.friendName.slice(-2)}}</div>
+                            <!--<div v-else="">{{item.remark.slice(-2) || item.friendName.slice(-2)}}</div>-->
                         </div>
                         <div>{{item.remark || item.friendName}}</div>
                     </li>

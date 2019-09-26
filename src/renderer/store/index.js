@@ -138,6 +138,7 @@ export default new Vuex.Store({
     },
     setCurrentChat: function(state, currentChat) {
       state.currentChat = currentChat;
+      console.log(state.currentChat);
       state.currentChat.unReadCount = 0;
 
       let tempChatList = state.chatList.map(function(chat) {
