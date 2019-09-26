@@ -99,6 +99,14 @@
       },
       chatList: {
         get: function() {
+          console.log(this.$store.state.chatList);
+          let chatList=this.$store.state.chatList;
+          console.log(chatList);
+          if(chatList.length){
+            if(chatList[0].isUserClick){
+              this.userChang(0,chatList[0])
+            }
+          }
           return this.$store.state.chatList;
         },
         set: function(chatList) {
@@ -169,6 +177,30 @@
         self.activeClass=index;
         self.currentChat = n;
 
+      },
+      /* 切换好友/群 */
+      userChang:function (index,n) {
+        console.log(n);
+        let self=this;
+        self.messageList=[];
+        self.pageNo=0;
+        self.isScroll=false;
+        self.getPersonCardInfo(n);
+        this.$store.commit('setShowFace', false);
+        let data={
+          "communicationType":"readed",
+          "content":n.type,
+          "from":n.id,
+          "fromRealName":n.remark || n.realName,
+          "to":self.user.userId,
+          "date":"",
+          "msgId":"",
+          "color":""
+        };
+        if(n.unReadCount){
+          self.$store.commit('sendMessage', data);
+        }
+        self.currentChat = n;
       },
       /* 查看更多 */
       didScroll:function (n) {
@@ -250,9 +282,10 @@
         self.$store.commit('sendMessage', data);
       },
     },
-   /* activated: function() {
+    activated: function() {
       let self = this;
       // 当前聊天室
+      console.log(self.$route.query.chat);
       if (self.$route.query.chat) {
         self.$store.commit('setCurrentChat', this.$route.query.chat);
       }
@@ -262,11 +295,12 @@
       this.$nextTick(() => {
         imageLoad('message-box');
       });
-    },*/
+    },
     created: function() {
       let self=this;
       self.user = self.$store.state.user.userId ? self.$store.state.user :JSON.parse(sessionStorage.getItem("user"));
       self.getMyChatLogList(self.user.userId);
+      console.log('111');
 
     },
     mounted: function() {

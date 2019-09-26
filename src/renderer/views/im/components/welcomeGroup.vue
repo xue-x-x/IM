@@ -23,13 +23,14 @@
                 </ul>
             </div>
             <div  class="group-button">
-                <a class="button-a" href="javascript:;">发消息</a>
+                <a class="button-a" href="javascript:;" @click="showChat">发消息</a>
             </div>
         </div>
     </div>
 </template>
 <script>
   import conf from '../conf';
+  const { Chat, ChatListUtils } = require('../utils/chatUtils.js');
 export default {
   name: 'welcome',
   props:{
@@ -45,7 +46,36 @@ export default {
     };
   },
   methods: {
-
+    // 打开一个聊天对话框
+    showChat: function() {
+      let self = this;
+      let user=self.groupInfo;
+      /*let key = "fromRealName";
+      let value = self.user.userName;
+      user[key] = value;
+      console.log(user);*/
+      console.log(user);
+      let chatList = ChatListUtils.getChatList(self.$store.state.user.id);
+      // 删除当前用户已经有的会话
+      let newChatList = chatList.filter(function(element) {
+        return String(element.id) !== String(user.imGroupId);
+      });
+      // 重新添加会话，放到第一个
+      let chat = new Chat(user.imGroupId, user.imGroupName, '', self.user.userName, user.imGroupLogo, 'group', true);
+      newChatList.unshift(chat);
+      newChatList.map(function (item) {
+        item.pitchOn=false;
+      });
+      newChatList[0].pitchOn=true;
+      console.log(newChatList);
+      // 存储到localStorage 的 chatList
+      ChatListUtils.setChatList(self.$store.state.user.id, chatList);
+      self.$store.commit('setChatList', newChatList);
+      self.$router.push({
+        path: '/index/chatBox',
+        query: { chat: chat }
+      });
+    }
   },
   mounted: function() {
 

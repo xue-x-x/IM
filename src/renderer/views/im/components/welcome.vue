@@ -35,13 +35,14 @@
                 </div>
             </div>
             <div  class="welcome-button">
-                <a class="button-a" href="javascript:;">发消息</a>
+                <a class="button-a" href="javascript:;" @click="showChat">发消息</a>
             </div>
         </div>
     </div>
 </template>
 <script>
   import conf from '../conf';
+  const { ChatListUtils } = require('../utils/chatUtils.js');
 export default {
   name: 'welcome',
   props:{
@@ -96,6 +97,20 @@ export default {
         .catch((error) => {
           console.log(error)
         });
+    },
+    // 打开一个聊天对话框
+    showChat: function() {
+      let self = this;
+      let user=self.userFriend;
+      let key = "fromRealName";
+      console.log(self.user);
+      let value = self.user.userName;
+      user[key] = value;
+      let chat = ChatListUtils.resetChatList(self, user, conf.getHostUrl(), 'p2p');
+      self.$router.push({
+        path: '/index/chatBox',
+        query: { chat: chat }
+      });
     }
   },
   directives: {

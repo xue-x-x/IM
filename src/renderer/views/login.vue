@@ -64,7 +64,7 @@
               self.user=response;
               /*self.getWebSocket();*/
               self.$router.push({
-                path: '/index/userBox',
+                path: '/index/chatBox',
                 params: {}
               });
             } else if (response.status === -2) {

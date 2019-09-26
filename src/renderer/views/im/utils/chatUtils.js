@@ -55,13 +55,14 @@ export function dateStr(date) {
  * 聊天会话
  */
 export class Chat {
-  constructor(id, realName, fromRealName, msg,  type, chatTime) {
+  constructor(id, realName, remark, fromRealName, header,  type, isUserClick) {
     this.id = id;
     this.realName = realName;
-    this.fromRealName = fromRealName;
-    this.msg = msg;
+    this.remark = remark;
+    this.fromRealName=fromRealName;
+    this.header=header;
     this.type = type;
-    this.chatTime = chatTime;
+    this.isUserClick=isUserClick
   }
 }
 
@@ -140,7 +141,6 @@ export function transform(content) {
   let href=content.split('?')[1];
   let time=content.split('?')[2];
   if(type == 'rrtFile'){
-    console.log(111);
     return '<a class="message-file" href="' +href+ '"><i class="ivu-icon ivu-icon-md-arrow-down"></i>' + href + '</a>';
   }else if(type == 'rrtaudio'){
     // return '<Maudio src="'+href+'"></Maudio>'
@@ -337,15 +337,20 @@ export const ChatListUtils = {
    * @param host 主机名
    * @returns {Chat} 当前会话
    */
-  resetChatList: function(self, user, host) {
+  resetChatList: function(self, user, host, type) {
     let chatList = this.getChatList(self.$store.state.user.id);
     // 删除当前用户已经有的会话
     let newChatList = chatList.filter(function(element) {
-      return String(element.id) !== String(user.id);
+      return String(element.id) !== String(user.friendId);
     });
     // 重新添加会话，放到第一个
-    let chat = new Chat(user.id, user.name, host + user.avatar, 0, '', user.mobile, user.email, MessageTargetType.FRIEND);
+    let chat = new Chat(user.friendId, user.realName, user.remark, user.fromRealName, user.header, type, true);
     newChatList.unshift(chat);
+    newChatList.map(function (item) {
+      item.pitchOn=false;
+    });
+    newChatList[0].pitchOn=true;
+    console.log(newChatList);
     // 存储到localStorage 的 chatList
     this.setChatList(self.$store.state.user.id, chatList);
     self.$store.commit('setChatList', newChatList);
