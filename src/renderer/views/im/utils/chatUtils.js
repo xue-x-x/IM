@@ -55,14 +55,15 @@ export function dateStr(date) {
  * 聊天会话
  */
 export class Chat {
-  constructor(id, realName, remark, fromRealName, header,  type, isUserClick) {
+  constructor(id, realName, remark, fromRealName, header,  type, isUserClick, pitchOn) {
     this.id = id;
     this.realName = realName;
     this.remark = remark;
     this.fromRealName=fromRealName;
     this.header=header;
     this.type = type;
-    this.isUserClick=isUserClick
+    this.isUserClick=isUserClick;
+    this.pitchOn=pitchOn;
   }
 }
 
@@ -339,21 +340,31 @@ export const ChatListUtils = {
    */
   resetChatList: function(self, user, host, type) {
     let chatList = this.getChatList(self.$store.state.user.id);
+    let msgTop=[];
+    let tempChatList=[];
+    let newList=[];
     // 删除当前用户已经有的会话
     let newChatList = chatList.filter(function(element) {
       return String(element.id) !== String(user.friendId);
     });
     // 重新添加会话，放到第一个
-    let chat = new Chat(user.friendId, user.realName, user.remark, user.fromRealName, user.header, type, true);
-    newChatList.unshift(chat);
     newChatList.map(function (item) {
       item.pitchOn=false;
+      item.isUserClick=false;
+      console.log(item);
+      if(item.msgTopTime == 1){
+        msgTop.push(item);
+      } else {
+        tempChatList.push(item);
+      }
     });
-    newChatList[0].pitchOn=true;
-    console.log(newChatList);
+    let chat = new Chat(user.friendId, user.realName, user.remark, user.fromRealName, user.header, type, true, true);
+    tempChatList.unshift(chat);
+    newList=tempChatList;
+    if(msgTop.length)newList=msgTop.concat(tempChatList);
     // 存储到localStorage 的 chatList
     this.setChatList(self.$store.state.user.id, chatList);
-    self.$store.commit('setChatList', newChatList);
+    self.$store.commit('setChatList', newList);
     return chat;
   }
 };

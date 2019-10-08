@@ -1,8 +1,8 @@
 <template>
     <div class="chat-message">
         <div class="chat-title">
-            <div>{{userItem.remark || userItem.realName}}</div>
-            <div class="ios-more" @click="unfold"><Icon type="ios-more" /></div>
+            <div>{{userItem.remark || userItem.realName}} <span v-if="userItem.imGrouperNum">（{{userItem.imGrouperNum}}）</span> </div>
+            <div class="ios-more" @click="unfold(userItem)"><Icon type="ios-more" /></div>
         </div>
         <div class="chat-content">
             <div class="chat-records" id="message-box"  @scroll="didScroll">
@@ -15,7 +15,7 @@
                     </li>
                     <li class="chat-records-li" :class="{'chat-mine': item.sendRealName == user.userName}" v-for="(item,index) in messageList" :key="index">
                         <div class="chat-user">
-                            <img v-if="item.sendHeader" :src="url+item.sendHeader" alt="">
+                            <img v-if="item.sendHeader" preview="" :src="url+item.sendHeader" alt="">
                             <div v-else-if="item.sendRealName == user.userName">{{item.sendRealName.slice(-2)}}</div>
                             <div v-else="">{{item.remark && item.remark.slice(-2) || item.sendRealName.slice(-2)}}</div>
                             <cite v-if="item.sendRealName != user.userName">{{item.remark || item.sendRealName}}<i>{{item.pubTime}}</i></cite>
@@ -87,8 +87,7 @@
                 title="请确认发送"
                 width="300"
                 :mask-closable="false"
-                @on-ok="ok"
-                @on-cancel="cancel">
+                @on-ok="ok">
             <div class="modal-alert">
                 <div>
                     <img src="/static/document.png" alt="">
@@ -97,8 +96,8 @@
             </div>
         </Modal>
         <div class="chat-drawer">
-            <Drawer :closable="false" v-model="p2p">
-                <!--<p>我是好友</p>-->
+            <!-- 好友 -->
+            <Drawer :closable="true" v-model="p2p" >
                 <div class="chat-drawer-title">
                     <div class="chat-drawer-header">
                         <img v-if="userItem.header" :src="url+userItem.header" alt="">
@@ -112,33 +111,103 @@
                 </div>
                 <div class="chat-drawer-switch">
                     <p>好友状态</p>
-                    <Button v-if="userItem.status == 2" type="error">删除好友</Button>
+                    <Button v-if="userItem.status == 2" type="error" @click="deleteFriend = true">删除好友</Button>
                     <Button v-else-if="userItem.status == 1" type="warning">已经申请</Button>
-                    <Button v-else="" type="success">添加好友</Button>
+                    <Button v-else="" type="success"  @click="addFriend = true">添加好友</Button>
                 </div>
 
             </Drawer>
-            <Drawer :closable="false" v-model="group">
-                <p>我是群</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+            <!-- 群 -->
+            <Drawer :closable="true" v-model="group">
+                <div class="chat-drawer-title">
+                    <div class="chat-drawer-header">
+                        <img v-if="userItem.header" :src="url+userItem.header" alt="">
+                        <div v-else>{{userItem.remark && userItem.remark.slice(-2) || userItem.realName && userItem.realName.slice(-2)}}</div>
+                    </div>
+                    <div class="chat-drawer-name">{{userItem.remark || userItem.realName}}</div>
+                </div>
+                <div>
+                    <ul class="group-members">
+                        <li class="members-li" @click="isGroupAdd = true">
+                        <!--<li class="members-li" @click="getGroupInfo">-->
+                            <div class="addMember">
+                                <Icon type="ios-add" />
+                            </div>
+                            <p class="members-name">添加</p>
+                        </li>
+                        <li class="members-li" v-if="groupPeopleList" v-for="(item,index) in groupPeopleList" :key="index">
+                            <div class="members-header">
+                                <img v-if="item.header" :src="url+item.header" alt="">
+                                <div v-else="">{{item.remark && item.remark.slice(-2) || item.realName.slice(-2)}}</div>
+                            </div>
+                            <p class="members-name">{{item.remark || item.realName}}</p>
+                        </li>
+                    </ul>
+                    <div v-if="iosArrowDown" class="ios-arrow" @click="arrowDown">查看更多成员<Icon type="ios-arrow-down" /></div>
+                    <div v-if="iosArrowUp" class="ios-arrow" @click="arrowUp">收起群成员<Icon type="ios-arrow-up" /></div>
+                </div>
+                <div class="chat-drawer-switch">
+                    <p>群名</p>
+                    <div v-if="!nameClick" @click="groupNameClick">{{userItem.realName}}</div>
+                    <div v-else="">
+                        <input type="text" v-focus v-model="groupName" autofocus="autofocus"  @blur="groupNameChang">
+                    </div>
+                </div>
+                <div class="chat-drawer-switch">
+                    <p>群介绍</p>
+                    <div v-if="!desClick" @click="groupDesClick">{{userItem.imGroupDes || '点击编辑群介绍'}}</div>
+                    <div v-else="">
+                        <textarea v-model="groupDes" class="addFriend-textarea" v-focus autofocus="autofocus"  @blur="groupNameChang"></textarea>
+                    </div>
+                </div>
+                <div class="chat-drawer-switch">
+                    <p>置顶消息</p>
+                    <i-switch v-model="roofButoon" @on-change="setRoof" />
+                </div>
+                <div class="chat-drawer-switch">
+                    <p>消息免打扰</p>
+                    <i-switch v-model="noDisturb" @on-change="setNoDisturb" />
+                </div>
             </Drawer>
         </div>
+        <Modal v-model="addFriend" width="360">
+            <p slot="header" class="addFriend-header">
+                <span>加为好友</span>
+            </p>
+            <div style="text-align:center">
+                <textarea v-model="addFriendTextarea" class="addFriend-textarea" id="" placeholder="请输入验证信息，限制40字"></textarea>
+            </div>
+            <div slot="footer">
+                <Button type="success" size="large" long :loading="modal_loading" @click="sendAddCode">发送验证消息</Button>
+            </div>
+        </Modal>
+        <Modal
+                v-model="deleteFriend"
+                title="提示"
+                width="300"
+                :mask-closable="false"
+                @on-ok="deleteFriendF">
+            <div>
+                确定删除吗？
+            </div>
+        </Modal>
+        <addGroupMember v-if="isGroupAdd" :isModel="isGroupAdd" :group="userItem" :groupPeopleIdList="userItem.groupPeopleIdList" @addGroup="addGroup"></addGroupMember>
+        <!--<addGroupMember :group="userItem" :groupPeopleIdList="userItem.groupPeopleIdList"></addGroupMember>-->
     </div>
-    <!--<someComponent></someComponent>-->
 </template>
 
 <script>
-  //import someComponent from './someComponent'
   const { imageLoad, transform, ChatListUtils } = require('../utils/chatUtils');
   import conf from '../conf'
   import Faces from './faces.vue';
   import maudio from './audio.vue';
+  import addGroupMember from './addGroupMember.vue';
 //  import WebsocketHeartbeatJs from '../utils/WebsocketHeartbeatJs.js';
   export default {
     components: {
       Faces,
-      maudio
+      maudio,
+      addGroupMember
     },
     name: "",
     props:{
@@ -160,13 +229,30 @@
         headers: {
           'Access-Control-Allow-Origin': '*'
         },
+        //发送文件弹窗
         modal:false,
         modalName:'',
         modalUrl:'',
+        //展开好友、群信息
+        groupPeopleList:[],
+        isGroupAdd:false,
+        number:11,
         p2p:false,
         group:false,
         roofButoon:false,
-        noDisturb:false
+        noDisturb:false,
+        iosArrowDown:false,
+        iosArrowUp:false,
+        //群信息
+        groupName:'',
+        nameClick:false,
+        groupDes:'',
+        desClick:false,
+        //添加好友
+        addFriendTextarea:'',
+        addFriend:false,
+        deleteFriend:false,
+        modal_loading:false,
       }
     },
     methods: {
@@ -174,26 +260,51 @@
         this.$Message.info('开关状态：' + status);
       },
       //展开好友、群信息
-      unfold:function () {
-//        this.p2p=true;
-        if(this.userItem.type == 'p2p'){
-          this.p2p=true
-        }else {
-          this.p2p=true
-        }
-        console.log(this.userItem);
-      },
-      //置顶消息按钮
-      roofChange:function (status) {
-        console.log(status);
-        console.log(this.userItem);
-        return
+      unfold:function (n) {
         let self=this;
+        let userItem= n;
+        self.roofButoon=userItem.msgTopTime == 1 ? true : false;
+        if(userItem.type == 'p2p'){
+          self.p2p=true
+        }else {
+          self.group=true;
+          if(userItem.groupPeopleList.length > self.number){
+            self.groupPeopleList=userItem.groupPeopleList.slice(0,self.number);
+            self.iosArrowDown=true;
+          }else {
+            self.groupPeopleList=userItem.groupPeopleList;
+          }
+        }
+
+      },
+      //查看更多群成员
+      arrowDown:function () {
+        let self=this;
+        self.groupPeopleList=self.userItem.groupPeopleList;
+        self.iosArrowDown=false;
+        self.iosArrowUp=true;
+      },
+      //收起群成员
+      arrowUp:function () {
+        let self=this;
+        self.groupPeopleList=self.userItem.groupPeopleList.slice(0,self.number);
+        self.iosArrowDown=true;
+        self.iosArrowUp=false;
+      },
+      //添加群成员
+      addGroup:function (text) {
+        this.isGroupAdd=text;
+      },
+      //好友消息设置置顶
+      roofChange:function (status) {
+        let self=this;
+        let msgTop=0;
+        if(status)msgTop=1;
         let formData = new FormData();
         // 请求参数 ('key',value)
         formData.set('userId', self.user.userId);
         formData.set('otherId', self.userItem.id);
-        formData.set('msgTop', 1);
+        formData.set('msgTop', msgTop);
         fetch(conf.getMsgTopChangeUrl(), {
           method: 'POST',
           model: 'cros', //跨域
@@ -206,24 +317,126 @@
           .then(json => {
             console.log(json);
             if(json.sign){
-              self.$emit('getMyChatLogList',self.user.userId)
+              self.$emit('getMyChatLogList',self.user.userId);
+              status && self.$Message.success('设置成功') || self.$Message.success('取消成功');
             }
           })
           .catch((error) => {
             console.log(error)
           });
       },
-      //消息免打扰按钮
-      noDisturbChang:function (status) {
-        this.$Message.info('开关状态：' + status);
+      //群消息设置置顶
+      setRoof:function (status) {
+        let self=this;
+        let msgTop=0;
+        if(status)msgTop=1;
+        let formData = new FormData();
+        // 请求参数 ('key',value)
+        formData.set('groupId', self.userItem.id);
+        formData.set('msgTop', msgTop);
+        fetch(conf.getGroupMsgTopChangeUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            console.log(json);
+            if(json.sign){
+              if(status)self.$emit('getMyChatLogList',self.user.userId)
+              status && self.$Message.success('设置成功') || self.$Message.success('取消成功');
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
       },
-      //设置置顶
-      setRoof:function () {
-
+      //群设置免打扰
+      setNoDisturb:function (status) {
+        console.log(status);
+        let self=this;
+        let msgCall=0;
+        if(status)msgCall=1;
+        let formData = new FormData();
+        // 请求参数 ('key',value)
+        formData.set('groupId', self.userItem.id);
+        formData.set('msgCall', msgCall);
+        fetch(conf.getMsgCallChangeUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            console.log(json);
+            if(json.sign){
+              status && self.$Message.success('设置成功') || self.$Message.success('取消成功');
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
       },
-      //设置免打扰
-      setNoDisturb:function () {
+      //点击群名
+      groupNameClick:function () {
+        this.groupName=this.userItem.realName;
+        this.nameClick=true
+      },
+      groupDesClick:function () {
+        this.desClick=true;
+        this.groupDes=this.userItem.imGroupDes
+      },
+      //修改群名和群介绍
+      groupNameChang:function () {
+        let self=this;
+        if(self.groupName == self.userItem.realName && !self.desClick){
+          self.nameClick=false;
+          return false;
+        }
+        if(self.groupDes == self.userItem.imGroupDes && !self.nameClick){
+          self.desClick=false;
+          return false;
+        }
+        if(!self.nameClick) self.groupName=this.userItem.realName;
+        if(!self.desClick) self.groupDes=this.userItem.imGroupDes;
 
+        console.log(self.groupDes);
+        let formData = new FormData();
+        // 请求参数 ('key',value)
+        formData.set('groupId', self.userItem.id);
+        formData.set('name', self.groupName);
+        formData.set('des', self.groupDes);
+        fetch(conf.getNameAndDesChangeUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            if(json.sign){
+              if(self.desClick){
+                self.userItem.remark=self.groupName;
+                self.isChange=false;
+                self.$emit('getMyChatLogList',self.user.userId);
+              }else if(self.desClick){
+                self.userItem.imGroupDes=self.groupDes;
+                self.desClick=false;
+              }
+
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
       },
       //确认发送文档
       ok:function(){
@@ -244,10 +457,6 @@
         let content='rrtFile?'+self.url+self.modalUrl;
         self.send(currentMessage);
       },
-      //取消发送文档
-      cancel:function(){
-        this.modal=false;
-      },
       /* 下拉加载更多 */
       didScroll:function () {
         let self=this;
@@ -265,6 +474,7 @@
           },300)
         }
       },
+      //发送内容
       changeText:function (event) {
         var index = this.getCaretPosition(event.target);
         this.caretPosition=index;
@@ -498,7 +708,64 @@
           imageLoad('message-box');
         });
       },
-
+      //添加好友，发送验证信息
+      sendAddCode:function () {
+        let self=this;
+        console.log(self.addFriendTextarea);
+        self.modal_loading = true;
+        let formData = new FormData();
+        // 请求参数 ('key',value)
+        formData.set('userId', self.user.userId);
+        formData.set('friendId', self.userItem.id);
+        formData.set('content', self.addFriendTextarea);
+        formData.set('type', 0);
+        fetch(conf.getApplyFriendUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            if(json.sign){
+              self.modal_loading = false;
+              self.$Message.success(json.msg);
+              self.addFriend=false;
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      },
+      //删除好友
+      deleteFriendF:function () {
+        let self=this;
+        let formData = new FormData();
+        // 请求参数 ('key',value)
+        formData.set('userId', self.user.userId);
+        formData.set('id', self.userItem.id);
+        fetch(conf.getDelFriendUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            if(json.sign){
+              self.$Message.success(json.msg);
+              self.deleteFriend=false;
+              self.userItem.status=0;
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      },
     },
     component: {
       //someComponent
@@ -522,10 +789,18 @@
         }
       }
     },
+    directives: {
+      focus: {
+        // 指令的定义
+        inserted: function (el) {
+          el.focus()
+        }
+      }
+    },
     watch: {
-
       // 监听每次 user 的变化
-      chat: function(val) {
+      userItem: function(val) {
+        console.log(val);
         /*let self = this;
         self.messageList = [];
         // 从内存中取聊天信息
@@ -557,17 +832,12 @@
         imageLoad('message-box');
       });
       this.action=conf.getUploadingUrl();
-//      let content='rrtFile?http://58.218.203.29/im/chatImg/20190924161159093_6912566新建 DOC 文档.doc';
-      let content='rrtaudio?http://58.218.203.29/im/chatImg/1568798386907.mp3?4';
-//      transform(content)
-      console.log(transform(content));
-//      console.log(conf.getUploadingUrl());
     }
   }
 </script>
 
 <style lang="scss" scoped>
-    /* 展开好友、群信息 */
+    /* 展开好友 */
     .chat-drawer-title{
         padding: 30px 0 20px;
         text-align: center;
@@ -599,11 +869,96 @@
     }
     .chat-drawer-switch{
         margin-top: 25px;
-        font-size: 16px;
+        font-size: 15px;
         color: #999;
         p{
             margin-bottom: 5px;
         }
+        >div{
+            width: 100%;
+            font-size: 14px;
+            color: #515a6e;
+        }
+        input{
+            display: block;
+            width: 100%;
+            border: 0 none;
+            color: #515a6e;
+        }
+        textarea{
+            padding: 0;
+            min-height: 40px;
+            color: #515a6e;
+        }
+    }
+    /* 展开群信息 */
+    .group-members{
+        margin-top: 25px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .ios-arrow{
+        margin-top: 10px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .members-li{
+        margin-top: 5px;
+        width: 54px;
+        text-align: center;
+        cursor: default;
+        .addMember{
+            i{
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                border:1px solid #ccc;
+                font-size: 26px;
+                border-radius: 3px;
+            }
+        }
+        .members-header{
+            margin: 0 auto;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 3px;
+            }
+            >div{
+                width: 100%;
+                height: 100%;
+                background-color: #3498db;
+                color: #fff;
+                border-radius: 50%;
+                text-align: center;
+                font-size: 14px;
+            }
+        }
+        .members-name{
+            padding: 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    /* 添加、删除好友 */
+    .addFriend-header{
+        color:#19be6b;
+        text-align:center;
+        font-size: 16px;
+    }
+    .addFriend-textarea{
+        padding: 5px;
+        width: 100%;
+        min-height: 80px;
+        border: none;
+        background-color: #fff;
+        resize:none;
+        font-size: 14px;
+        color: #666;
     }
     /* 文件弹窗 */
     .modal-alert{

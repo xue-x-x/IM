@@ -38,7 +38,7 @@
         </div>
         <div class="chat-box">
             <Top></Top>
-            <Chat :chat="currentChat" :user="user" :userItem="userItem" :isHaveMore="isHaveMore" @didScroll="didScroll" @getMyChatLogList="getMyChatLogList"></Chat>
+            <Chat ref="chat" :chat="currentChat" :user="user" :userItem="userItem" :isHaveMore="isHaveMore" @didScroll="didScroll" @getMyChatLogList="getMyChatLogList" @changUserItem="changUserItem" @getGroupInfo="getGroupInfo"></Chat>
         </div>
     </div>
     <!--<someComponent></someComponent>-->
@@ -101,12 +101,16 @@
       chatList: {
         get: function() {
           console.log(this.$store.state.chatList);
-          let chatList=this.$store.state.chatList;
-          console.log(chatList);
+          let self=this;
+          let chatList=self.$store.state.chatList;
+          console.log(chatList.length && chatList[0].isUserClick);
           if(chatList.length){
-            if(chatList[0].isUserClick){
-              this.userChang(0,chatList[0])
-            }
+            chatList.map(function (item,index) {
+              if(item.isUserClick){
+                self.userChang(index,chatList[index]);
+              }
+            });
+
           }
           return this.$store.state.chatList;
         },
@@ -154,7 +158,11 @@
           self.pageNo=0;
           self.isScroll=false;
           self.getPersonCardInfo(n);
-          self.getPersonalDetails(n);
+          if(n.type == 'p2p'){
+            self.getPersonalDetails(n)
+          }else {
+            self.getGroupInfo(n)
+          }
           this.$store.commit('setShowFace', false);
         }
         let data={
@@ -172,6 +180,7 @@
         }
         chatList.map(function (item) {
           item.pitchOn=false;
+          item.isUserClick=false;
         });
         chatList[index].pitchOn=true;
         self.chatList=chatList;
@@ -182,11 +191,16 @@
       /* 切换好友/群 */
       userChang:function (index,n) {
         let self=this;
+        console.log(n);
         self.messageList=[];
         self.pageNo=0;
         self.isScroll=false;
         self.getPersonCardInfo(n);
-        self.getPersonalDetails(n);
+        if(n.type == 'p2p'){
+          self.getPersonalDetails(n)
+        }else {
+          self.getGroupInfo(n)
+        }
         this.$store.commit('setShowFace', false);
         let data={
           "communicationType":"readed",
@@ -234,11 +248,52 @@
             console.log(error)
           });
       },
+      /* 获取群信息 */
+      getGroupInfo:function (n) {
+        let self=this;
+        let update=false;
+        let groupItem=n;
+        //判断是否是更新
+        if(groupItem.imGrouperNum){
+          update=true;
+          delete groupItem.groupPeopleList;
+          delete groupItem.groupPeopleIdList;
+          delete groupItem.imGrouperNum;
+        }
+        let formData = new FormData();
+        formData.set('userId', self.user.userId);
+        formData.set('groupId', groupItem.id);
+        formData.set('time', new Date().getTime());
+        fetch(conf.getGroupInfoUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            let newJson=JSON.stringify(json);
+            let data=Object.assign(JSON.parse(newJson),groupItem);
+            self.userItem=data;
+            if(update){
+              self.$refs.chat.unfold(self.userItem);
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      },
+      changUserItem:function (n) {
+        self.userItem=n;
+      },
       /* 获取聊天记录 */
       getPersonCardInfo:function (n) {
         let self=this;
         let formData = new FormData();
         let userItem=n;
+        console.log(n);
         formData.set('curUserId', self.user.userId);
         formData.set('otherId', userItem.id);
         formData.set('pageNo', self.pageNo);
@@ -253,6 +308,7 @@
         })
           .then(response => response.json())
           .then(json => {
+            console.log(json);
             self.isHaveMore=json.list.length >= 50 ? true : false;
             self.messageList=json.list.concat(self.messageList);
             self.messageList.forEach((item,index,array)=>{
@@ -380,6 +436,7 @@
           if (String(message.to) === String(self.$store.state.currentChat.id)) {
             if (String(message.from) !== self.$store.state.user.id) {
               self.$store.commit('addMessage', newList);
+              self.$store.commit('changPlace', newList);
             } else if(String(message.from) === String(self.user.userId)){
               self.$store.commit('addMessage', newList);
               self.$store.commit('changPlace', newList);

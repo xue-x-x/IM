@@ -206,21 +206,32 @@ export default new Vuex.Store({
      */
     changPlace: function (state, message) {
       let tempChatList = [];
+      let msgTop=[];
+      let chatList=[];
       let tempChat = {};
       for (let chat of state.chatList) {
         // 给接受消息的聊天室未读数量 +1
+        console.log(chat);
         if (String(chat.id) === String(message.receiveUserId)){
           tempChat = chat;
+        } else if(chat.msgTopTime == 1){
+          msgTop.push(chat);
         } else {
           tempChatList.push(chat);
         }
       }
+      console.log(msgTop);
+      console.log(tempChatList);
       // 添加到聊天室列表的第一个
       tempChatList.unshift(tempChat);
+      chatList=tempChatList;
+
+      if(msgTop.length)chatList=msgTop.concat(tempChatList);
+      console.log(chatList);
       // 重新设置chatList
-      state.chatList = tempChatList;
+      state.chatList = chatList;
       // 放入缓存
-      ChatListUtils.setChatList(state.user.id, tempChatList);
+      ChatListUtils.setChatList(state.user.id, chatList);
     }
 
   },

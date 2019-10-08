@@ -19,11 +19,21 @@ export default {
   uploadingUrl:'/info/phone/mchat/uploadImg',
   msgTopChange:'/info/phone/msgTopChange',
   groupMsgTopChange:'/info/phone/group/msgTopChange',
+  msgCallChange:'/info/phone/group/msgCallChange',
+  applyFriend:'/info/phone/applyFriend',
+  delFriend:'/info/phone/delFriend',
+  getAllGroupPerson:'/info/phone/group/getAllGroupPerson',
+  findOrgByPid:'/info/phone/findOrgByPid',
+  findUsersByDeptId:'/info/phone/findUsersByDeptId',
+  addPersonToGroup:'/info/phone/addPersonToGroup',
+  nameAndDesChange:'/info/phone/group/nameAndDesChange',
   ws_protocol: 'ws',
   url: 'http://58.218.203.29',
+  // url: 'http://192.168.1.183',
   getHostUrl: function() {
     // return this.http_protocol + '://' + localStorage.getItem('host') + ':' + this.http_port;
     return this.http_protocol + '://58.218.203.29:' + this.http_port;
+    // return this.http_protocol + '://192.168.1.183:' + this.http_port;
   },
   //登录地址
   getTokenUrl: function() {
@@ -72,6 +82,38 @@ export default {
   //群消息置顶
   getGroupMsgTopChangeUrl: function() {
     return this.getHostUrl() + this.groupMsgTopChange;
+  },
+  //群消息免打扰
+  getMsgCallChangeUrl: function() {
+    return this.getHostUrl() + this.msgCallChange;
+  },
+  //好友申请
+  getApplyFriendUrl: function() {
+    return this.getHostUrl() + this.applyFriend;
+  },
+  //删除好友
+  getDelFriendUrl: function() {
+    return this.getHostUrl() + this.delFriend;
+  },
+  //获取群所有成员
+  getAllGroupPersonUrl: function() {
+    return this.getHostUrl() + this.getAllGroupPerson;
+  },
+  //查找部门列表
+  getFindOrgByPidUrl: function() {
+    return this.getHostUrl() + this.findOrgByPid;
+  },
+  //根据部门id查询人员信息
+  getFindUsersByDeptIdUrl: function() {
+    return this.getHostUrl() + this.findUsersByDeptId;
+  },
+  //添加群成员
+  getAddPersonToGroupUrl: function() {
+    return this.getHostUrl() + this.addPersonToGroup;
+  },
+  //修改群名和群介绍
+  getNameAndDesChangeUrl: function() {
+    return this.getHostUrl() + this.nameAndDesChange;
   },
   getInitUrl: function() {
     return this.getHostUrl() + this.init;
