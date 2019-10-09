@@ -50,10 +50,6 @@ export default {
     showChat: function() {
       let self = this;
       let user=self.groupInfo;
-      /*let key = "fromRealName";
-      let value = self.user.userName;
-      user[key] = value;
-      console.log(user);*/
       console.log(user);
       let chatList = ChatListUtils.getChatList(self.$store.state.user.id);
       // 删除当前用户已经有的会话

@@ -121,10 +121,10 @@
             <Drawer :closable="true" v-model="group">
                 <div class="chat-drawer-title">
                     <div class="chat-drawer-header">
-                        <img v-if="userItem.header" :src="url+userItem.header" alt="">
-                        <div v-else>{{userItem.remark && userItem.remark.slice(-2) || userItem.realName && userItem.realName.slice(-2)}}</div>
+                        <img v-if="userItem.header" :src="url+userItem.imGroupLogo" alt="">
+                        <div v-else>{{userItem.remark && userItem.remark.slice(-2) || userItem.imGroupName && userItem.imGroupName.slice(-2)}}</div>
                     </div>
-                    <div class="chat-drawer-name">{{userItem.remark || userItem.realName}}</div>
+                    <div class="chat-drawer-name">{{userItem.remark || userItem.imGroupName}}</div>
                 </div>
                 <div>
                     <ul class="group-members">
@@ -148,7 +148,7 @@
                 </div>
                 <div class="chat-drawer-switch">
                     <p>群名</p>
-                    <div v-if="!nameClick" @click="groupNameClick">{{userItem.realName}}</div>
+                    <div v-if="!nameClick" @click="groupNameClick">{{userItem.imGroupName}}</div>
                     <div v-else="">
                         <input type="text" v-focus v-model="groupName" autofocus="autofocus"  @blur="groupNameChang">
                     </div>
@@ -199,7 +199,6 @@
             </div>
         </Modal>
         <addGroupMember v-if="isGroupAdd" :isModel="isGroupAdd" :group="userItem" :groupPeopleIdList="userItem.groupPeopleIdList" @addGroup="addGroup"></addGroupMember>
-        <!--<addGroupMember :group="userItem" :groupPeopleIdList="userItem.groupPeopleIdList"></addGroupMember>-->
     </div>
 </template>
 
@@ -299,8 +298,8 @@
         self.iosArrowUp=false;
       },
       //添加群成员
-      addGroup:function (text) {
-        this.isGroupAdd=text;
+      addGroup:function (boolean) {
+        this.isGroupAdd=boolean;
       },
       //好友消息设置置顶
       roofChange:function (status) {
@@ -324,7 +323,7 @@
           .then(json => {
             console.log(json);
             if(json.sign){
-              self.$emit('getMyChatLogList',self.user.userId);
+              if(status)self.$emit('getMyChatLogList',self.user.userId);
               status && self.$Message.success('设置成功') || self.$Message.success('取消成功');
             }
           })

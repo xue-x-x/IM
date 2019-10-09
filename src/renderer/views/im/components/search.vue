@@ -4,15 +4,20 @@
             <Input prefix="ios-search" v-model="search" placeholder="搜索" size="small" class="search" @on-focus="showSearch()" @on-keyup="searchUser"/>
             <Icon v-if="showSearchDiv" class="close" @click="closeSearchDiv" type="md-close" />
         </div>
-        <Icon class="fr" type="ios-add" />
+        <Icon class="fr" type="ios-add" @click="isModel = true" />
+        <createNewGroup v-if="isModel" :isModel="isModel" @addGroup="addGroup"></createNewGroup>
     </div>
 </template>
 <script>
 import conf from '../conf';
 import { pinyin } from '../utils/pinyin.js';
 import { fetchPost } from '../utils/chatUtils';
+import createNewGroup from './createNewGroup.vue';
 
 export default {
+  components:{
+    createNewGroup,
+  },
   props:{
     isUser:Boolean,
     isGroup:Boolean,
@@ -25,7 +30,8 @@ export default {
       userList: this.list,
       searchUserList: [],
       showSearchDiv: false,
-      activeClass:Number
+      activeClass:Number,
+      isModel:false,
     };
   },
   methods: {
@@ -80,6 +86,10 @@ export default {
       self.showSearchDiv = false;
       self.search = '';
       self.$emit('showSearch', this.showSearchDiv);
+    },
+    //关闭弹窗
+    addGroup:function (boolean) {
+      this.isModel=boolean;
     },
   },
   created: function() {

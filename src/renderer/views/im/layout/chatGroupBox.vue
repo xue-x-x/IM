@@ -134,6 +134,10 @@
       self.user = self.$store.state.user.userId ? self.$store.state.user :JSON.parse(sessionStorage.getItem("user"));
       self.getMyGroups(self.user.userId);
     },
+    updated:function () {
+      console.log(111111111);
+      this.getMyGroups(this.user.userId);
+    },
   }
 </script>
 

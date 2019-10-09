@@ -29,6 +29,7 @@ export default {
   nameAndDesChange:'/info/phone/group/nameAndDesChange',
   delGroup:'/info/phone/delGroup',
   delPersonFromGroup:'/info/phone/delPersonFromGroup',
+  createNewGroup:'/info/phone/createNewGroup',
   ws_protocol: 'ws',
   url: 'http://58.218.203.29',
   // url: 'http://192.168.1.183',
@@ -124,6 +125,10 @@ export default {
   //删除群成员
   getDelPersonFromGroupUrl: function() {
     return this.getHostUrl() + this.delPersonFromGroup;
+  },
+  //创建普通群
+  getCreateNewGroupUrl: function() {
+    return this.getHostUrl() + this.createNewGroup;
   },
   getInitUrl: function() {
     return this.getHostUrl() + this.init;

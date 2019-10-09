@@ -100,17 +100,14 @@
       },
       chatList: {
         get: function() {
-          console.log(this.$store.state.chatList);
           let self=this;
           let chatList=self.$store.state.chatList;
-          console.log(chatList.length && chatList[0].isUserClick);
           if(chatList.length){
             chatList.map(function (item,index) {
               if(item.isUserClick){
                 self.userChang(index,chatList[index]);
               }
             });
-
           }
           return this.$store.state.chatList;
         },
@@ -263,7 +260,6 @@
         let formData = new FormData();
         formData.set('userId', self.user.userId);
         formData.set('groupId', groupItem.id);
-        formData.set('time', new Date().getTime());
         fetch(conf.getGroupInfoUrl(), {
           method: 'POST',
           model: 'cros', //跨域
