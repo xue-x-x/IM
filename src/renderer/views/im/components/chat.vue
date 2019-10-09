@@ -168,6 +168,13 @@
                     <p>消息免打扰</p>
                     <i-switch v-model="noDisturb" @on-change="setNoDisturb" />
                 </div>
+                <div v-if="userItem.groupCreater == user.userId" class="chat-drawer-switch chat-drawer-buttons">
+                    <Button type="error" @click="delPersonFromGroup">退出群聊</Button>
+                    <Button type="success" @click="delGroup">删除群聊</Button>
+                </div>
+                <div v-else="" class="chat-drawer-switch chat-drawer-buttons">
+                    <Button class="noGroupOwner" type="error" @click="delPersonFromGroup">退出群聊</Button>
+                </div>
             </Drawer>
         </div>
         <Modal v-model="addFriend" width="360">
@@ -196,7 +203,7 @@
     </div>
 </template>
 
-<script>
+<script>0
   const { imageLoad, transform, ChatListUtils } = require('../utils/chatUtils');
   import conf from '../conf'
   import Faces from './faces.vue';
@@ -388,6 +395,7 @@
         this.groupName=this.userItem.realName;
         this.nameClick=true
       },
+      //点击群介绍
       groupDesClick:function () {
         this.desClick=true;
         this.groupDes=this.userItem.imGroupDes
@@ -423,15 +431,62 @@
           .then(response => response.json())
           .then(json => {
             if(json.sign){
-              if(self.desClick){
+              if(self.nameClick){
                 self.userItem.remark=self.groupName;
-                self.isChange=false;
+                self.nameClick=false;
                 self.$emit('getMyChatLogList',self.user.userId);
               }else if(self.desClick){
                 self.userItem.imGroupDes=self.groupDes;
                 self.desClick=false;
               }
 
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      },
+      //删除群聊
+      delGroup:function () {
+        let self=this;
+        let formData = new FormData();
+        formData.set('groupId', self.userItem.id);
+        fetch(conf.getDelGroupUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            if(json.sign){
+              self.$emit('getMyChatLogList',self.user.userId);
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      },
+      //退出群聊
+      delPersonFromGroup:function () {
+        let self=this;
+        let formData = new FormData();
+        formData.set('groupId', self.userItem.id);
+        formData.set('perId', self.user.userId);
+        fetch(conf.getDelPersonFromGroupUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            if(json.sign){
+              self.$emit('getMyChatLogList',self.user.userId);
             }
           })
           .catch((error) => {
@@ -889,6 +944,20 @@
             padding: 0;
             min-height: 40px;
             color: #515a6e;
+        }
+    }
+    .chat-drawer-buttons{
+        padding: 20px 0 4px 0;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #f5f5f5;
+        button{
+            width: 48%;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .noGroupOwner{
+            width: 100%;
         }
     }
     /* 展开群信息 */
