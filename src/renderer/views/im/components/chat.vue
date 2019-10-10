@@ -112,7 +112,7 @@
                 <div class="chat-drawer-switch">
                     <p>好友状态</p>
                     <Button v-if="userItem.status == 2" type="error" @click="deleteFriend = true">删除好友</Button>
-                    <Button v-else-if="userItem.status == 1" type="warning">已经申请</Button>
+                    <!--<Button v-else-if="userItem.status == 1" type="warning">已经申请</Button>-->
                     <Button v-else="" type="success"  @click="addFriend = true">添加好友</Button>
                 </div>
 
@@ -752,11 +752,8 @@
         console.log(message);
         let currentUser = self.$store.state.user;
         let newList={};
-        console.log(1111);
         self.$store.commit('sendMessage', message);
-        console.log(2222);
         self.messageContent = '';
-        console.log(self.messageContent);
         // 每次滚动到最底部
         self.$nextTick(() => {
           imageLoad('message-box');
@@ -772,7 +769,7 @@
         formData.set('userId', self.user.userId);
         formData.set('friendId', self.userItem.id);
         formData.set('content', self.addFriendTextarea);
-        formData.set('type', 0);
+        formData.set('type', self.userItem.status);
         fetch(conf.getApplyFriendUrl(), {
           method: 'POST',
           model: 'cros', //跨域
@@ -810,6 +807,7 @@
         })
           .then(response => response.json())
           .then(json => {
+            console.log(json);
             if(json.sign){
               self.$Message.success(json.msg);
               self.deleteFriend=false;

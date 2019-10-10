@@ -30,6 +30,8 @@ export default {
   delGroup:'/info/phone/delGroup',
   delPersonFromGroup:'/info/phone/delPersonFromGroup',
   createNewGroup:'/info/phone/createNewGroup',
+  showApplyList:'/info/phone/showApplyList',
+  doFriendApply:'/info/phone/doFriendApply',
   ws_protocol: 'ws',
   url: 'http://58.218.203.29',
   // url: 'http://192.168.1.183',
@@ -129,6 +131,14 @@ export default {
   //创建普通群
   getCreateNewGroupUrl: function() {
     return this.getHostUrl() + this.createNewGroup;
+  },
+  //好友申请列表
+  getShowApplyListUrl: function() {
+    return this.getHostUrl() + this.showApplyList;
+  },
+  //(接受/拒绝)申请好友
+  getDoFriendApplyUrl: function() {
+    return this.getHostUrl() + this.doFriendApply;
   },
   getInitUrl: function() {
     return this.getHostUrl() + this.init;

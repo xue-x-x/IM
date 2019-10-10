@@ -129,14 +129,11 @@
         this.searchUserList=n
       }
     },
-    created: function() {
+    activated:function () {
       let self=this;
       self.user = self.$store.state.user.userId ? self.$store.state.user :JSON.parse(sessionStorage.getItem("user"));
       self.getMyGroups(self.user.userId);
-    },
-    updated:function () {
-      console.log(111111111);
-      this.getMyGroups(this.user.userId);
+      self.isClick=false;
     },
   }
 </script>
@@ -183,7 +180,7 @@
             position: relative;
             padding: 10px 10px 10px 60px;
             line-height: 40px;
-            font-size: 16px;
+            font-size: 15px;
 
             .li-img{
                 position: absolute;

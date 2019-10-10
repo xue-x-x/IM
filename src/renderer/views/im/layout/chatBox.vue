@@ -497,7 +497,7 @@
         position: relative;
         padding: 10px 10px 10px 60px;
         line-height: 40px;
-        font-size: 16px;
+        font-size: 15px;
 
         .li-img{
             position: absolute;

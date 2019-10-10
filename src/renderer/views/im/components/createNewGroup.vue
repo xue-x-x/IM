@@ -151,6 +151,7 @@
             console.log(json);
             if(json.sign){
               self.$Message.success('创建成功');
+              this.$emit('addGroup', false);
               self.groupNameModal=false;
               self.getGroupInfo(json.groupId);
             }
