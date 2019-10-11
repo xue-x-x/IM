@@ -6,6 +6,7 @@
         </div>
         <div class="chat-content">
             <div class="chat-records" id="message-box"  @scroll="didScroll">
+            <!--<div class="chat-records" id="message-box">-->
                 <ul>
                     <li class="view-more" v-if="isHaveMore">
                         <span v-if="isView">查看更多</span>
@@ -515,6 +516,7 @@
       didScroll:function () {
         let self=this;
         let div = document.getElementById('message-box');
+        console.log(self.pageNo);
         if(div.scrollTop == 0 && self.isHaveMore){
           self.pageNo++;
           let data={

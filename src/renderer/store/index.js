@@ -211,7 +211,6 @@ export default new Vuex.Store({
       let tempChat = {};
       for (let chat of state.chatList) {
         // 给接受消息的聊天室未读数量 +1
-        console.log(chat);
         if (String(chat.id) === String(message.receiveUserId)){
           tempChat = chat;
         } else if(chat.msgTopTime == 1){

@@ -86,7 +86,8 @@
         pageNo:0,
         isHaveMore:true,
         isScroll:false,
-        messageList:[]
+        messageList:[],
+        isUserChang:false
       }
     },
     computed: {
@@ -105,6 +106,7 @@
           if(chatList.length){
             chatList.map(function (item,index) {
               if(item.isUserClick){
+                console.log(111);
                 self.userChang(index,chatList[index]);
               }
             });
@@ -188,7 +190,7 @@
       /* 切换好友/群 */
       userChang:function (index,n) {
         let self=this;
-        console.log(n);
+        console.log(self.isUserChang);
         self.messageList=[];
         self.pageNo=0;
         self.isScroll=false;
@@ -217,6 +219,7 @@
       /* 查看更多 */
       didScroll:function (n) {
         this.pageNo=n.pageNo;
+        console.log(this.pageNo);
         this.isScroll=n.isScroll;
         this.getPersonCardInfo(n.userItem);
       },
@@ -290,6 +293,7 @@
         let formData = new FormData();
         let userItem=n;
         console.log(n);
+        console.log(this.pageNo);
         formData.set('curUserId', self.user.userId);
         formData.set('otherId', userItem.id);
         formData.set('pageNo', self.pageNo);
@@ -306,9 +310,11 @@
           .then(json => {
             console.log(json);
             self.isHaveMore=json.list.length >= 50 ? true : false;
+            console.log(self.messageList);
             self.messageList=json.list.concat(self.messageList);
+            console.log(self.messageList);
             self.messageList.forEach((item,index,array)=>{
-              item.remark1=transform(item.remark1);
+              item.remark1= item.remark1 ? transform(item.remark1) : item.remark1;
             });
             self.$store.commit('setMessageList', self.messageList);
             if(!self.isScroll){

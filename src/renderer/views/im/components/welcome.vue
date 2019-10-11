@@ -3,18 +3,18 @@
         <div v-if="isClick">
             <div class="welcome-name">
                 <div>
-                    {{userFriend.friendName}}
+                    {{userFriend.friendName || userFriend.realName}}
                     <Icon v-if="userFriend.sex == '女'" class="woman" type="ios-bowtie" />
                     <Icon v-else-if="userFriend.sex == '男'" class="man" type="md-bowtie" />
                 </div>
                 <div class="welcome-header">
                     <img v-if="userFriend.header" :src="url+userFriend.header" alt="">
-                    <div v-else="">{{userFriend.friendName.slice(-2)}}</div>
+                    <div v-else="">{{userFriend.friendName && userFriend.friendName.slice(-2) || userFriend.realName.slice(-2)}}</div>
                     <!--<div>{{userFriend.friendName.slice(-2)}}</div>-->
                 </div>
             </div>
             <div class="welcome-introduce">
-                <div class="introduce-div">
+                <div class="introduce-div" v-if="!userFriend.isOrganization">
                     <span class="introduce-title">备注</span>
                     <span v-if="!isChange" class="introduce-name" @click="bzClick">{{userFriend.remark || '点击添加备注'}}</span>
                     <span v-if="isChange">
@@ -28,6 +28,10 @@
                 <div class="introduce-div" v-if="userFriend.deptName">
                     <span class="introduce-title">部门</span>
                     <span>{{userFriend.deptName}}</span>
+                </div>
+                <div class="introduce-div" v-if="userFriend.modtime">
+                    <span class="introduce-title">职位</span>
+                    <span>{{userFriend.modtime}}</span>
                 </div>
                 <div class="introduce-div" v-if="userFriend.orgName">
                     <span class="introduce-title">公司</span>
@@ -102,10 +106,9 @@ export default {
     showChat: function() {
       let self = this;
       let user=self.userFriend;
-      let key = "fromRealName";
       console.log(self.user);
-      let value = self.user.userName;
-      user[key] = value;
+      user['fromRealName'] = self.user.userName;
+//      user['isUserClick'] = true;
       let chat = ChatListUtils.resetChatList(self, user, conf.getHostUrl(), 'p2p');
       self.$router.push({
         path: '/index/chatBox',

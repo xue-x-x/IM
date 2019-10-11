@@ -45,35 +45,27 @@ export default {
     },
     searchUser: function() {
       let self=this;
-//      self.$emit('getSearchUser', this.search.trim().toUpperCase());
       this.searchUserList = [];
-      console.log(this.list);
-      for (let i = 0; i < this.list.length; i++) {
+      for (let i = 0; i < self.list.length; i++) {
         let name,remark;
         if(self.isUser){
-          name = this.list[i].friendName || this.list[i].realName;
-          remark = this.list[i].remark;
+          name = self.list[i].friendName || self.list[i].realName;
+          remark = self.list[i].remark;
         }
         if(self.isGroup){
-          name = this.list[i].name;
-          remark = this.list[i].name;
+          name = self.list[i].name;
+          remark = self.list[i].name;
         }
         let searchTemp = this.search.trim().toUpperCase();
         if (searchTemp !== '') {
           // 支持拼音查询
           if (
             name.indexOf(searchTemp) !== -1 ||
-            remark.indexOf(searchTemp) !== -1 ||
             pinyin
               .getFullChars(name)
               .toUpperCase()
               .indexOf(searchTemp) !== -1 ||
-            pinyin
-              .getFullChars(remark)
-              .toUpperCase()
-              .indexOf(searchTemp) !== -1 ||
-            pinyin.getCamelChars(name).indexOf(searchTemp) !== -1 ||
-            pinyin.getCamelChars(remark).indexOf(searchTemp) !== -1
+            pinyin.getCamelChars(name).indexOf(searchTemp) !== -1
           ) {
             this.searchUserList.push(this.list[i]);
             self.$emit('searchUser', this.searchUserList);

@@ -137,10 +137,19 @@ export function excludeSpecial(content) {
 }
 
 export function transform(content) {
-  content = content.replace(/[\'\\\n\r\t]/g, '');
-  let type=content.split('?')[0];
-  let href=content.split('?')[1];
-  let time=content.split('?')[2];
+  let type='',
+    href='',
+    time='';
+  if(typeof content == 'string'){
+    content = content.replace(/[\'\\\n\r\t]/g, '');
+    type=content.split('?')[0];
+    href=content.split('?')[1];
+    time=content.split('?')[2];
+  }else if(typeof content == 'object'){
+    type=content.type;
+    href=content.url;
+    time=content.time;
+  }
   if(type == 'rrtFile'){
     return '<a class="message-file" href="' +href+ '"><i class="ivu-icon ivu-icon-md-arrow-down"></i>' + href + '</a>';
   }else if(type == 'rrtaudio'){
@@ -348,6 +357,7 @@ export const ChatListUtils = {
       return String(element.id) !== String(user.friendId);
     });
     // 重新添加会话，放到第一个
+    console.log(newChatList);
     newChatList.map(function (item) {
       item.pitchOn=false;
       item.isUserClick=false;

@@ -21,6 +21,11 @@
                         <Icon type="ios-contacts-outline"/>
                     </router-link>
                 </li>
+                <li>
+                    <router-link v-bind:to="'/index/organization'">
+                        <Icon type="ios-people-outline" />
+                    </router-link>
+                </li>
             </ul>
         </div>
         <keep-alive>

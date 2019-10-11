@@ -19,18 +19,18 @@
                             <div v-else="">{{item.remark && item.remark.slice(-2) || item.friendName.slice(-2)}}</div>
                             <!--<div v-else="">{{item.remark.slice(-2) || item.friendName.slice(-2)}}</div>-->
                         </div>
-                        <div>{{item.remark || item.friendName}}</div>
+                        <div class="li-name">{{item.remark || item.friendName}}</div>
                     </li>
                 </ul>
             </div>
             <div class="group-box" v-else="">
                 <ul class="group-list" v-if="searchUserList">
-                    <li class="group-list-li" v-for="(item,index) in searchUserList" :key="index">
+                    <li class="group-list-li" :class="{'activeClass': activeClass == index && !isApplyList}" v-for="(item,index) in searchUserList" :key="index" @click="userClick(index,item)">
                         <div class="li-img">
                             <img v-if="item.header" :src="url+item.header" alt="">
                             <div v-else="">{{item.friendName.slice(-2)}}</div>
                         </div>
-                        <div>{{item.remark || item.friendName}}</div>
+                        <div class="li-name">{{item.remark || item.friendName}}</div>
                     </li>
                 </ul>
             </div>
@@ -140,6 +140,7 @@
       /* 搜索切换 */
       showSearch:function (n) {
         this.showSearchDiv=n;
+        this.isClick=false;
       },
       /* 点击好友 */
       userClick:function (index,n) {
@@ -181,31 +182,6 @@
       },
       searchUser:function (n) {
         this.searchUserList=n
-      },
-      /* 搜索  */
-      getSearchUser:function (search) {
-        let self=this;
-        let formData = new FormData();
-        let content=search;
-        formData.set('userId', self.user.userId);
-        formData.set('content', content);
-
-        fetch(conf.getSearchFromFriendsByNoUrl(), {
-          method: 'POST',
-          model: 'cros', //跨域
-          headers: {
-            Accept: 'application/json'
-
-          },
-          body: formData
-        })
-          .then(response => response.json())
-          .then(json => {
-            console.log(json);
-          })
-          .catch((error) => {
-            console.log(error)
-          });
       },
       /* 显示好友申请 */
       showAddFriendList:function () {
@@ -278,7 +254,7 @@
           "color":"17c295",
           "header":self.user.headImg
         };
-        self.$store.commit('sendMessage', currentMessage);
+//        self.$store.commit('sendMessage', currentMessage);
         user['fromRealName'] = self.user.userName;
         let chat = ChatListUtils.resetChatList(self, user, conf.getHostUrl(), 'p2p');
         self.$router.push({
@@ -388,9 +364,14 @@
                     font-size: 14px;
                 }
             }
+            .li-name{
+                width: 100%;
+                @include omit;
+            }
         }
         .group-list-li:hover{
             background-color: #dbdada;
+            cursor: default;
         }
         .activeClass{
             background-color: #c5c5c5;
