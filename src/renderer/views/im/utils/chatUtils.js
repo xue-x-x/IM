@@ -64,6 +64,7 @@ export class Chat {
     this.type = type;
     this.isUserClick=isUserClick;
     this.pitchOn=pitchOn;
+    this.unReadCount=0;
   }
 }
 

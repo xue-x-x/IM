@@ -3,15 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="51d43609-8bb1-454a-80d3-5943b5ad1d35" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/router/index.js" afterPath="$PROJECT_DIR$/src/renderer/router/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/store/index.js" afterPath="$PROJECT_DIR$/src/renderer/store/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/components/chat.vue" afterPath="$PROJECT_DIR$/src/renderer/views/im/components/chat.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/components/search.vue" afterPath="$PROJECT_DIR$/src/renderer/views/im/components/search.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/components/welcome.vue" afterPath="$PROJECT_DIR$/src/renderer/views/im/components/welcome.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/layout/chatBox.vue" afterPath="$PROJECT_DIR$/src/renderer/views/im/layout/chatBox.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/components/addGroupMember.vue" afterPath="$PROJECT_DIR$/src/renderer/views/im/components/addGroupMember.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/components/createNewGroup.vue" afterPath="$PROJECT_DIR$/src/renderer/views/im/components/createNewGroup.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/conf/index.js" afterPath="$PROJECT_DIR$/src/renderer/views/im/conf/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/layout/userBox.vue" afterPath="$PROJECT_DIR$/src/renderer/views/im/layout/userBox.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/utils/HttpApiUtils.js" afterPath="$PROJECT_DIR$/src/renderer/views/im/utils/HttpApiUtils.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/im/utils/chatUtils.js" afterPath="$PROJECT_DIR$/src/renderer/views/im/utils/chatUtils.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/index.vue" afterPath="$PROJECT_DIR$/src/renderer/views/index.vue" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderer/views/login.vue" afterPath="$PROJECT_DIR$/src/renderer/views/login.vue" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,18 +28,21 @@
       <file leaf-file-name="chatBox.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/chatBox.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2002">
-              <caret line="91" column="6" lean-forward="true" selection-start-line="91" selection-start-column="6" selection-end-line="91" selection-end-column="6" />
+            <state relative-caret-position="2783">
+              <caret line="522" column="16" lean-forward="true" selection-start-line="522" selection-start-column="16" selection-end-line="526" selection-end-column="32" />
               <folding>
                 <element signature="n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                 <element signature="e#2751#2797#0" expanded="true" />
                 <element signature="e#4484#4550#0" expanded="false" />
+                <element signature="e#4635#5271#0" expanded="false" />
                 <element signature="e#5320#5359#0" expanded="false" />
                 <element signature="e#5413#6470#0" expanded="false" />
+                <element signature="e#6526#7271#0" expanded="false" />
                 <element signature="e#7319#7470#0" expanded="false" />
                 <element signature="e#7525#8169#0" expanded="false" />
                 <element signature="e#8221#9258#0" expanded="false" />
                 <element signature="e#9293#9327#0" expanded="false" />
+                <element signature="e#9385#10720#0" expanded="false" />
                 <element signature="e#10752#10794#0" expanded="false" />
                 <element signature="e#10850#11450#0" expanded="false" />
                 <element signature="e#11483#11691#0" expanded="false" />
@@ -52,45 +55,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="search.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/search.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="46" column="20" lean-forward="false" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
-              <folding>
-                <element signature="e#542#569#0" expanded="true" />
-                <element signature="e#1085#1307#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pinyin.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/renderer/views/im/utils/pinyin.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="addGroupMember.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/addGroupMember.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="677">
-              <caret line="35" column="99" lean-forward="false" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="99" />
+            <state relative-caret-position="104">
+              <caret line="4" column="15" lean-forward="true" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="37" />
               <folding>
-                <element signature="e#5391#5500#0" expanded="false" />
-                <element signature="e#5535#5606#0" expanded="false" />
-                <element signature="e#5637#6215#0" expanded="false" />
-                <element signature="e#5796#6205#0" expanded="false" />
-                <element signature="e#6267#6964#0" expanded="false" />
-                <element signature="e#7024#7602#0" expanded="false" />
-                <element signature="e#7675#8701#0" expanded="false" />
-                <element signature="e#8758#8915#0" expanded="false" />
-                <element signature="e#8970#9688#0" expanded="false" />
-                <element signature="e#9741#10187#0" expanded="false" />
+                <element signature="e#5429#5538#0" expanded="false" />
+                <element signature="e#5573#5644#0" expanded="false" />
+                <element signature="e#5675#6253#0" expanded="false" />
+                <element signature="e#5834#6243#0" expanded="false" />
+                <element signature="e#6305#7002#0" expanded="false" />
+                <element signature="e#7062#7640#0" expanded="false" />
+                <element signature="e#7713#8739#0" expanded="false" />
+                <element signature="e#8796#8953#0" expanded="false" />
+                <element signature="e#9008#9726#0" expanded="false" />
+                <element signature="e#9779#10225#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -99,25 +79,53 @@
       <file leaf-file-name="index.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderer/views/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="24" column="64" lean-forward="false" selection-start-line="24" selection-start-column="52" selection-end-line="24" selection-end-column="64" />
+            <state relative-caret-position="919">
+              <caret line="134" column="23" lean-forward="false" selection-start-line="134" selection-start-column="23" selection-end-line="134" selection-end-column="23" />
+              <folding>
+                <element signature="e#2922#2979#0" expanded="true" />
+                <element signature="e#3298#3349#0" expanded="false" />
+                <element signature="e#3399#3958#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/renderer/views/login.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3224">
+              <caret line="167" column="8" lean-forward="false" selection-start-line="167" selection-start-column="8" selection-end-line="167" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="organization.vue" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/organization.vue">
+      <file leaf-file-name="login.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/login.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="651">
-              <caret line="272" column="22" lean-forward="false" selection-start-line="272" selection-start-column="22" selection-end-line="272" selection-end-column="22" />
-              <folding>
-                <element signature="e#2395#2441#0" expanded="true" />
-                <element signature="e#3236#3836#0" expanded="false" />
-                <element signature="e#3896#4474#0" expanded="false" />
-                <element signature="e#5308#5463#0" expanded="false" />
-                <element signature="e#5674#6448#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="348">
+              <caret line="34" column="9" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="167" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HttpApiUtils.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/renderer/views/im/utils/HttpApiUtils.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="26">
+              <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/renderer/store/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="772">
+              <caret line="157" column="7" lean-forward="true" selection-start-line="157" selection-start-column="7" selection-end-line="157" selection-end-column="7" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -125,16 +133,16 @@
       <file leaf-file-name="createNewGroup.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/createNewGroup.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1498">
-              <caret line="137" column="50" lean-forward="false" selection-start-line="137" selection-start-column="50" selection-end-line="137" selection-end-column="50" />
+            <state relative-caret-position="468">
+              <caret line="18" column="94" lean-forward="false" selection-start-line="18" selection-start-column="84" selection-end-line="18" selection-end-column="94" />
               <folding>
-                <element signature="e#4298#4378#0" expanded="false" />
-                <element signature="e#8547#8618#0" expanded="false" />
-                <element signature="e#9279#9945#0" expanded="false" />
-                <element signature="e#10005#10583#0" expanded="false" />
-                <element signature="e#10656#11353#0" expanded="false" />
-                <element signature="e#11410#11565#0" expanded="false" />
-                <element signature="e#12201#12405#0" expanded="false" />
+                <element signature="e#4336#4416#0" expanded="false" />
+                <element signature="e#8585#8656#0" expanded="false" />
+                <element signature="e#9317#9983#0" expanded="false" />
+                <element signature="e#10043#10621#0" expanded="false" />
+                <element signature="e#10694#11391#0" expanded="false" />
+                <element signature="e#11448#11603#0" expanded="false" />
+                <element signature="e#12239#12443#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -144,31 +152,21 @@
         <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/userBox.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="287">
-              <caret line="371" column="0" lean-forward="false" selection-start-line="371" selection-start-column="0" selection-end-line="371" selection-end-column="0" />
+              <caret line="356" column="16" lean-forward="true" selection-start-line="356" selection-start-column="16" selection-end-line="356" selection-end-column="30" />
               <folding>
                 <element signature="n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="false" />
                 <element signature="e#3707#4300#0" expanded="false" />
                 <element signature="e#4435#4481#0" expanded="true" />
                 <element signature="e#5144#5876#0" expanded="false" />
                 <element signature="e#5925#5992#0" expanded="false" />
+                <element signature="e#6046#6145#0" expanded="false" />
                 <element signature="e#6203#7080#0" expanded="false" />
                 <element signature="e#7112#7151#0" expanded="false" />
                 <element signature="e#7208#7276#0" expanded="false" />
                 <element signature="e#7330#7883#0" expanded="false" />
                 <element signature="e#7950#8695#0" expanded="false" />
-                <element signature="e#8743#9470#0" expanded="false" />
-                <element signature="e#9500#9554#0" expanded="false" />
+                <element signature="e#9097#9151#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="welcome.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/welcome.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="26">
-              <caret line="1" column="33" lean-forward="true" selection-start-line="1" selection-start-column="33" selection-end-line="1" selection-end-column="33" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -185,36 +183,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>li-name</find>
+      <find>getMyChatLogList</find>
+      <find>resetChatList</find>
+      <find>getChatList</find>
+      <find>chat</find>
+      <find>getWebSocket</find>
+      <find>data</find>
+      <find>myLogout</find>
+      <find>user-model-img</find>
+      <find>currentMessage</find>
       <find>omit</find>
-      <find>friend-name</find>
-      <find>index/chatGroupBox</find>
-      <find>getFindOrgByPid</find>
-      <find>friend-img</find>
-      <find>isClick</find>
-      <find>getPersonCardInfo</find>
-      <find>organization-box</find>
-      <find>showChat</find>
-      <find>userFriend</find>
-      <find>realName</find>
-      <find>list</find>
-      <find>isModel</find>
-      <find>searchUserList</find>
-      <find>wc-copy-pop</find>
-      <find>script</find>
-      <find>pop-404d62a350</find>
-      <find>ivu-menu-item-active</find>
-      <find>group-list</find>
-      <find>group-list-li</find>
-      <find>getSearchUser</find>
-      <find>showSearchDiv</find>
-      <find>userClick</find>
-      <find>showSearch</find>
-      <find>activeClass</find>
-      <find>isApplyList</find>
-      <find>unReadCount</find>
-      <find>isUser</find>
-      <find>friend-information</find>
+      <find>fromRealName</find>
+      <find>setChatList</find>
+      <find>FormData</find>
+      <find>doFriendApply</find>
+      <find>formData</find>
+      <find>timeOutTime</find>
+      <find>HttpApiUtils</find>
+      <find>127.0.0.1</find>
+      <find>192.168.1.183</find>
+      <find>/info/phone/getToken</find>
+      <find>getToken</find>
+      <find>getTokenUrl</find>
+      <find>token_path</find>
+      <find>login</find>
+      <find>user-model-item</find>
+      <find>sign</find>
+      <find>getLoginUrl</find>
+      <find>fetch</find>
+      <find>li-img</find>
+      <find>status</find>
     </findStrings>
     <replaceStrings>
       <replace>_this</replace>
@@ -228,6 +226,7 @@
       <replace>self</replace>
       <replace>192.168.1.183</replace>
       <replace>333</replace>
+      <replace>192.168.1.184</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -252,27 +251,29 @@
         <option value="$PROJECT_DIR$/src/renderer/main.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/package-lock.json" />
-        <option value="$PROJECT_DIR$/src/renderer/views/login.vue" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/components/drawer.vue" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/components/friend.vue" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/components/groupMembers.vue" />
-        <option value="$PROJECT_DIR$/src/renderer/views/im/components/addGroupMember.vue" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/components/welcomeGroup.vue" />
-        <option value="$PROJECT_DIR$/src/renderer/views/im/components/createNewGroup.vue" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/layout/chatGroupBox.vue" />
         <option value="$PROJECT_DIR$/node_modules/iview/dist/styles/iview.css" />
-        <option value="$PROJECT_DIR$/src/renderer/views/im/conf/index.js" />
-        <option value="$PROJECT_DIR$/src/renderer/store/index.js" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/components/chat.vue" />
-        <option value="$PROJECT_DIR$/src/renderer/views/im/utils/chatUtils.js" />
-        <option value="$PROJECT_DIR$/src/renderer/views/im/layout/chatBox.vue" />
         <option value="$PROJECT_DIR$/src/renderer/router/index.js" />
-        <option value="$PROJECT_DIR$/src/renderer/views/index.vue" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/components/welcome.vue" />
         <option value="D:/Documents/WeChat Files/xue-x-x-/FileStorage/File/2019-10/1-index.html" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/components/search.vue" />
-        <option value="$PROJECT_DIR$/src/renderer/views/im/layout/userBox.vue" />
         <option value="$PROJECT_DIR$/src/renderer/views/im/layout/organization.vue" />
+        <option value="$PROJECT_DIR$/src/renderer/views/im/layout/chatBox.vue" />
+        <option value="$PROJECT_DIR$/src/renderer/views/im/layout/userBox.vue" />
+        <option value="$PROJECT_DIR$/src/renderer/views/im/utils/chatUtils.js" />
+        <option value="$PROJECT_DIR$/src/renderer/views/im/components/addGroupMember.vue" />
+        <option value="$PROJECT_DIR$/src/renderer/views/im/components/createNewGroup.vue" />
+        <option value="$PROJECT_DIR$/src/renderer/views/index.vue" />
+        <option value="$PROJECT_DIR$/src/renderer/views/im/layout/login.vue" />
+        <option value="$PROJECT_DIR$/src/renderer/views/im/conf/index.js" />
+        <option value="$PROJECT_DIR$/src/renderer/views/login.vue" />
+        <option value="$PROJECT_DIR$/src/renderer/views/im/utils/HttpApiUtils.js" />
+        <option value="$PROJECT_DIR$/src/renderer/store/index.js" />
       </list>
     </option>
   </component>
@@ -287,7 +288,7 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1400" />
@@ -326,21 +327,13 @@
               <item name="IM" type="b2602c69:ProjectViewProjectNode" />
               <item name="IM" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="renderer" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="IM" type="b2602c69:ProjectViewProjectNode" />
               <item name="IM" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="renderer" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="IM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="IM" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="renderer" type="462c0819:PsiDirectoryNode" />
-              <item name="router" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="IM" type="b2602c69:ProjectViewProjectNode" />
@@ -363,15 +356,6 @@
               <item name="renderer" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="im" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="IM" type="b2602c69:ProjectViewProjectNode" />
-              <item name="IM" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="renderer" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="im" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="IM" type="b2602c69:ProjectViewProjectNode" />
@@ -417,11 +401,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PHPTutorial\WWW\VUE\IM\src\renderer\views\im\layout" />
       <recent name="D:\PHPTutorial\WWW\VUE\IM\src\renderer\assets" />
       <recent name="D:\PHPTutorial\WWW\VUE\IM\src\renderer" />
       <recent name="D:\PHPTutorial\WWW\VUE\IM\src\renderer\views\im\components" />
       <recent name="D:\PHPTutorial\WWW\VUE\IM\src\main" />
-      <recent name="D:\PHPTutorial\WWW\VUE\IM\src\renderer\views\im\layout" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -475,16 +459,18 @@
       <workItem from="1570616101785" duration="63000" />
       <workItem from="1570669715474" duration="22175000" />
       <workItem from="1570756290521" duration="23801000" />
+      <workItem from="1570842747197" duration="13236000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="472300000" />
+    <option name="totallyTimeSpent" value="485536000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17860906" sideWeight="0.3880435" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22444679" sideWeight="0.38152173" order="2" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31847826" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32826087" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -492,7 +478,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31717598" sideWeight="0.5038002" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17860906" sideWeight="0.61195654" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22444679" sideWeight="0.61847824" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -512,25 +498,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="43" />
+      <option name="time" value="44" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/webstorm.jar!/resources/html5-schema/html5/web-forms.rnc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="271" column="16" lean-forward="false" selection-start-line="271" selection-start-column="16" selection-end-line="271" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/top.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1898">
-          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderer/styles/common.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
@@ -628,13 +600,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/login.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1612">
-          <caret line="66" column="37" lean-forward="false" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/drawer.vue" />
     <entry file="file://$PROJECT_DIR$/node_modules/iview/src/styles/mixins/loading.less">
       <provider selected="true" editor-type-id="text-editor">
@@ -651,13 +616,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/groupMembers.vue" />
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/utils/HttpApiUtils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1526">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/Documents/WeChat Files/xue-x-x-/FileStorage/File/2019-10/index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
@@ -694,39 +652,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="287">
           <caret line="0" column="3692" lean-forward="false" selection-start-line="0" selection-start-column="3692" selection-end-line="0" selection-end-column="3692" />
-          <folding>
-            <element signature="e#294974#295113#2" expanded="true" />
-            <element signature="e#301124#301263#2" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/store/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="215" column="40" lean-forward="true" selection-start-line="215" selection-start-column="40" selection-end-line="215" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/conf/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="138" column="4" lean-forward="false" selection-start-line="138" selection-start-column="4" selection-end-line="138" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/utils/chatUtils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="359" column="27" lean-forward="false" selection-start-line="359" selection-start-column="16" selection-end-line="359" selection-end-column="27" />
-          <folding>
-            <element signature="e#3809#4518#0" expanded="false" />
-            <element signature="e#4540#4862#0" expanded="false" />
-            <element signature="e#4866#5199#0" expanded="false" />
-            <element signature="e#5204#7496#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -738,7 +663,7 @@
             <element signature="e#2150#2633#0" expanded="false" />
             <element signature="n#Drawer#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#Modal#2;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="e#11310#11336#0" expanded="true" />
+            <element signature="e#11310#11336#0" expanded="false" />
             <element signature="e#11753#12731#0" expanded="false" />
             <element signature="e#12891#13393#0" expanded="false" />
             <element signature="e#13040#13075#0" expanded="false" />
@@ -815,124 +740,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="24" column="64" lean-forward="false" selection-start-line="24" selection-start-column="52" selection-end-line="24" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/addGroupMember.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="677">
-          <caret line="35" column="99" lean-forward="false" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="99" />
-          <folding>
-            <element signature="e#5391#5500#0" expanded="false" />
-            <element signature="e#5535#5606#0" expanded="false" />
-            <element signature="e#5637#6215#0" expanded="false" />
-            <element signature="e#5796#6205#0" expanded="false" />
-            <element signature="e#6267#6964#0" expanded="false" />
-            <element signature="e#7024#7602#0" expanded="false" />
-            <element signature="e#7675#8701#0" expanded="false" />
-            <element signature="e#8758#8915#0" expanded="false" />
-            <element signature="e#8970#9688#0" expanded="false" />
-            <element signature="e#9741#10187#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/chatBox.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2002">
-          <caret line="91" column="6" lean-forward="true" selection-start-line="91" selection-start-column="6" selection-end-line="91" selection-end-column="6" />
-          <folding>
-            <element signature="n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="e#2751#2797#0" expanded="true" />
-            <element signature="e#4484#4550#0" expanded="false" />
-            <element signature="e#5320#5359#0" expanded="false" />
-            <element signature="e#5413#6470#0" expanded="false" />
-            <element signature="e#7319#7470#0" expanded="false" />
-            <element signature="e#7525#8169#0" expanded="false" />
-            <element signature="e#8221#9258#0" expanded="false" />
-            <element signature="e#9293#9327#0" expanded="false" />
-            <element signature="e#10752#10794#0" expanded="false" />
-            <element signature="e#10850#11450#0" expanded="false" />
-            <element signature="e#11483#11691#0" expanded="false" />
-            <element signature="e#12405#12505#0" expanded="false" />
-            <element signature="e#12565#12603#0" expanded="false" />
-            <element signature="e#12653#12719#0" expanded="false" />
-            <element signature="e#12776#15022#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/welcome.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="1" column="33" lean-forward="true" selection-start-line="1" selection-start-column="33" selection-end-line="1" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/createNewGroup.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1498">
-          <caret line="137" column="50" lean-forward="false" selection-start-line="137" selection-start-column="50" selection-end-line="137" selection-end-column="50" />
-          <folding>
-            <element signature="e#4298#4378#0" expanded="false" />
-            <element signature="e#8547#8618#0" expanded="false" />
-            <element signature="e#9279#9945#0" expanded="false" />
-            <element signature="e#10005#10583#0" expanded="false" />
-            <element signature="e#10656#11353#0" expanded="false" />
-            <element signature="e#11410#11565#0" expanded="false" />
-            <element signature="e#12201#12405#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/Documents/WeChat Files/xue-x-x-/FileStorage/File/2019-10/1-index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="906">
           <caret line="403" column="0" lean-forward="true" selection-start-line="403" selection-start-column="0" selection-end-line="403" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#1;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#2;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/search.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
+        <state relative-caret-position="1014">
           <caret line="46" column="20" lean-forward="false" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
           <folding>
-            <element signature="e#542#569#0" expanded="true" />
+            <element signature="e#542#569#0" expanded="false" />
             <element signature="e#1085#1307#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/userBox.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="371" column="0" lean-forward="false" selection-start-line="371" selection-start-column="0" selection-end-line="371" selection-end-column="0" />
-          <folding>
-            <element signature="n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="e#3707#4300#0" expanded="false" />
-            <element signature="e#4435#4481#0" expanded="true" />
-            <element signature="e#5144#5876#0" expanded="false" />
-            <element signature="e#5925#5992#0" expanded="false" />
-            <element signature="e#6203#7080#0" expanded="false" />
-            <element signature="e#7112#7151#0" expanded="false" />
-            <element signature="e#7208#7276#0" expanded="false" />
-            <element signature="e#7330#7883#0" expanded="false" />
-            <element signature="e#7950#8695#0" expanded="false" />
-            <element signature="e#8743#9470#0" expanded="false" />
-            <element signature="e#9500#9554#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -945,17 +766,181 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/welcome.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="108" column="29" lean-forward="true" selection-start-line="108" selection-start-column="29" selection-end-line="108" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/organization.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="272" column="22" lean-forward="false" selection-start-line="272" selection-start-column="22" selection-end-line="272" selection-end-column="22" />
+        <state relative-caret-position="79">
+          <caret line="250" column="0" lean-forward="true" selection-start-line="250" selection-start-column="0" selection-end-line="250" selection-end-column="0" />
           <folding>
-            <element signature="e#2395#2441#0" expanded="true" />
+            <element signature="e#2395#2441#0" expanded="false" />
             <element signature="e#3236#3836#0" expanded="false" />
             <element signature="e#3896#4474#0" expanded="false" />
             <element signature="e#5308#5463#0" expanded="false" />
             <element signature="e#5674#6448#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/userBox.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="356" column="16" lean-forward="true" selection-start-line="356" selection-start-column="16" selection-end-line="356" selection-end-column="30" />
+          <folding>
+            <element signature="n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="e#3707#4300#0" expanded="false" />
+            <element signature="e#4435#4481#0" expanded="true" />
+            <element signature="e#5144#5876#0" expanded="false" />
+            <element signature="e#5925#5992#0" expanded="false" />
+            <element signature="e#6046#6145#0" expanded="false" />
+            <element signature="e#6203#7080#0" expanded="false" />
+            <element signature="e#7112#7151#0" expanded="false" />
+            <element signature="e#7208#7276#0" expanded="false" />
+            <element signature="e#7330#7883#0" expanded="false" />
+            <element signature="e#7950#8695#0" expanded="false" />
+            <element signature="e#9097#9151#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/createNewGroup.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="18" column="94" lean-forward="false" selection-start-line="18" selection-start-column="84" selection-end-line="18" selection-end-column="94" />
+          <folding>
+            <element signature="e#4336#4416#0" expanded="false" />
+            <element signature="e#8585#8656#0" expanded="false" />
+            <element signature="e#9317#9983#0" expanded="false" />
+            <element signature="e#10043#10621#0" expanded="false" />
+            <element signature="e#10694#11391#0" expanded="false" />
+            <element signature="e#11448#11603#0" expanded="false" />
+            <element signature="e#12239#12443#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/components/addGroupMember.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="4" column="15" lean-forward="true" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="37" />
+          <folding>
+            <element signature="e#5429#5538#0" expanded="false" />
+            <element signature="e#5573#5644#0" expanded="false" />
+            <element signature="e#5675#6253#0" expanded="false" />
+            <element signature="e#5834#6243#0" expanded="false" />
+            <element signature="e#6305#7002#0" expanded="false" />
+            <element signature="e#7062#7640#0" expanded="false" />
+            <element signature="e#7713#8739#0" expanded="false" />
+            <element signature="e#8796#8953#0" expanded="false" />
+            <element signature="e#9008#9726#0" expanded="false" />
+            <element signature="e#9779#10225#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/chatBox.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2783">
+          <caret line="522" column="16" lean-forward="true" selection-start-line="522" selection-start-column="16" selection-end-line="526" selection-end-column="32" />
+          <folding>
+            <element signature="n#div#1;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="e#2751#2797#0" expanded="true" />
+            <element signature="e#4484#4550#0" expanded="false" />
+            <element signature="e#4635#5271#0" expanded="false" />
+            <element signature="e#5320#5359#0" expanded="false" />
+            <element signature="e#5413#6470#0" expanded="false" />
+            <element signature="e#6526#7271#0" expanded="false" />
+            <element signature="e#7319#7470#0" expanded="false" />
+            <element signature="e#7525#8169#0" expanded="false" />
+            <element signature="e#8221#9258#0" expanded="false" />
+            <element signature="e#9293#9327#0" expanded="false" />
+            <element signature="e#9385#10720#0" expanded="false" />
+            <element signature="e#10752#10794#0" expanded="false" />
+            <element signature="e#10850#11450#0" expanded="false" />
+            <element signature="e#11483#11691#0" expanded="false" />
+            <element signature="e#12405#12505#0" expanded="false" />
+            <element signature="e#12565#12603#0" expanded="false" />
+            <element signature="e#12653#12719#0" expanded="false" />
+            <element signature="e#12776#15022#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/webpack-dev-server/lib/utils/createCertificate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="49" column="17" lean-forward="false" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/utils/chatUtils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="512">
+          <caret line="243" column="15" lean-forward="false" selection-start-line="243" selection-start-column="15" selection-end-line="243" selection-end-column="15" />
+          <folding>
+            <element signature="e#3833#4542#0" expanded="false" />
+            <element signature="e#4890#5223#0" expanded="false" />
+            <element signature="e#5228#7520#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/index.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="919">
+          <caret line="134" column="23" lean-forward="false" selection-start-line="134" selection-start-column="23" selection-end-line="134" selection-end-column="23" />
+          <folding>
+            <element signature="e#2922#2979#0" expanded="true" />
+            <element signature="e#3298#3349#0" expanded="false" />
+            <element signature="e#3399#3958#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/layout/login.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="34" column="9" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="167" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/login.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3224">
+          <caret line="167" column="8" lean-forward="false" selection-start-line="167" selection-start-column="8" selection-end-line="167" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/conf/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="44" column="13" lean-forward="false" selection-start-line="44" selection-start-column="2" selection-end-line="44" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/views/im/utils/HttpApiUtils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderer/store/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="772">
+          <caret line="157" column="7" lean-forward="true" selection-start-line="157" selection-start-column="7" selection-end-line="157" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>

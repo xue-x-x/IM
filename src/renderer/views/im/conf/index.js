@@ -6,7 +6,7 @@ export default {
   init: '/api/user/init',
   his_url: '/api/message/list',
   chat_users_url: '/api/user/chatUserList',
-  token_path: '/info/phone/login',
+  login: '/info/phone/login',
   register_url: '/register',
   myFriendsUrl:'/info/phone/findMyFriends',
   myGroups:'/info/phone/findMyGroups',
@@ -32,17 +32,18 @@ export default {
   createNewGroup:'/info/phone/createNewGroup',
   showApplyList:'/info/phone/showApplyList',
   doFriendApply:'/info/phone/doFriendApply',
+  getToken:'/info/phone/getToken',
   ws_protocol: 'ws',
   url: 'http://58.218.203.29',
-  // url: 'http://192.168.1.183',
+  // url: 'http://192.168.1.184',
   getHostUrl: function() {
     // return this.http_protocol + '://' + localStorage.getItem('host') + ':' + this.http_port;
     return this.http_protocol + '://58.218.203.29:' + this.http_port;
-    // return this.http_protocol + '://192.168.1.183:' + this.http_port;
+    // return this.http_protocol + '://192.168.1.184:' + this.http_port;
   },
   //登录地址
-  getTokenUrl: function() {
-    return this.getHostUrl() + this.token_path;
+  getLoginUrl: function() {
+    return this.getHostUrl() + this.login;
   },
   //好友列表
   getMyFriendsUrl: function() {
@@ -140,6 +141,10 @@ export default {
   getDoFriendApplyUrl: function() {
     return this.getHostUrl() + this.doFriendApply;
   },
+  //获取Token
+  getTokenUrl: function() {
+    return this.getHostUrl() + this.getToken;
+  },
   getInitUrl: function() {
     return this.getHostUrl() + this.init;
   },
@@ -155,5 +160,8 @@ export default {
   getWsUrl: function() {
     // return this.ws_protocol + '://' + localStorage.getItem('host') + ':' + this.ws_port;
     return this.ws_protocol + '://58.218.203.29:' + this.ws_port;
+  },
+  openURL: function () {
+    return this.getHostUrl() + '/info/authorization';
   }
 };

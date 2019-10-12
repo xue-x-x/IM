@@ -2,6 +2,7 @@
     <div>
         <Modal v-model="model"
                width="535"
+               :mask-closable="false"
                @on-ok="okModal"
                @on-cancel="cancelModal">
             <div class="member-box">

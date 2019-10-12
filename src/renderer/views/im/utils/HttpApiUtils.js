@@ -13,7 +13,7 @@ class HttpApiUtils {
    */
   login(formData) {
     return timeoutFetch(
-      fetch(conf.getTokenUrl(), {
+      fetch(conf.getLoginUrl(), {
         method: 'POST',
         model: 'cros', //跨域
         headers: {
@@ -24,7 +24,7 @@ class HttpApiUtils {
       this.timeOutTime
     )
       .then(response => {
-
+        console.log(response);
         if (response.status === 200) {
           return response.json();
         } else if (response.status === 401) {

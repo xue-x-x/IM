@@ -242,19 +242,6 @@
       showChat: function() {
         let self = this;
         let user=self.userFriend;
-        console.log(user);
-        let currentMessage = {
-          "communicationType":'p2p',
-          "content":'我们成为好友了',
-          "from":self.user.userId,
-          "fromRealName":self.user.userName,
-          "to":user.friendId,
-          "date":"",
-          "msgId":"",
-          "color":"17c295",
-          "header":self.user.headImg
-        };
-//        self.$store.commit('sendMessage', currentMessage);
         user['fromRealName'] = self.user.userName;
         let chat = ChatListUtils.resetChatList(self, user, conf.getHostUrl(), 'p2p');
         self.$router.push({
@@ -262,6 +249,7 @@
           query: { chat: chat }
         });
       },
+      //修改备注
       bzChange:function (n) {
         this.getMyFriends(this.user.userId);
       },
