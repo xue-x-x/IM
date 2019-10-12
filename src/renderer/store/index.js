@@ -140,14 +140,15 @@ export default new Vuex.Store({
       console.log(currentChat);
       state.currentChat = currentChat;
       state.currentChat.unReadCount = 0;
-      /*let tempChatList = state.chatList.map(function(chat) {
+      let tempChatList = state.chatList.map(function(chat) {
         if (String(chat.id) === String(currentChat.id)) {
           chat.unReadCount = 0;
+          chat.isUserClick = false;
         }
         return chat;
       });
       // 放入缓存
-       ChatListUtils.setChatList(state.user.id, tempChatList);*/
+       ChatListUtils.setChatList(state.user.id, tempChatList);
     },
     setChatList: function(state, chatList) {
       state.chatList = chatList;
