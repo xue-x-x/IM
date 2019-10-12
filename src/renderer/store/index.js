@@ -219,14 +219,11 @@ export default new Vuex.Store({
           tempChatList.push(chat);
         }
       }
-      console.log(msgTop);
-      console.log(tempChatList);
       // 添加到聊天室列表的第一个
       tempChatList.unshift(tempChat);
       chatList=tempChatList;
 
       if(msgTop.length)chatList=msgTop.concat(tempChatList);
-      console.log(chatList);
       // 重新设置chatList
       state.chatList = chatList;
       // 放入缓存

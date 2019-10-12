@@ -106,7 +106,6 @@
           if(chatList.length){
             chatList.map(function (item,index) {
               if(item.isUserClick){
-                console.log(111);
                 self.userChang(index,chatList[index]);
               }
             });
@@ -190,7 +189,6 @@
       /* 切换好友/群 */
       userChang:function (index,n) {
         let self=this;
-        console.log(self.isUserChang);
         self.messageList=[];
         self.pageNo=0;
         self.isScroll=false;
@@ -219,7 +217,6 @@
       /* 查看更多 */
       didScroll:function (n) {
         this.pageNo=n.pageNo;
-        console.log(this.pageNo);
         this.isScroll=n.isScroll;
         this.getPersonCardInfo(n.userItem);
       },
@@ -308,9 +305,7 @@
         })
           .then(response => response.json())
           .then(json => {
-            console.log(json);
             self.isHaveMore=json.list.length >= 50 ? true : false;
-            console.log(self.messageList);
             self.messageList=json.list.concat(self.messageList);
             console.log(self.messageList);
             self.messageList.forEach((item,index,array)=>{
@@ -369,7 +364,6 @@
     activated: function() {
       let self = this;
       // 当前聊天室
-      console.log(self.$route.query.chat);
       if (self.$route.query.chat) {
         self.$store.commit('setCurrentChat', this.$route.query.chat);
       }
@@ -416,7 +410,8 @@
           "sendColor": "17c295",
           "sendRealName": message.fromRealName,
           "sendUserId": message.from,
-          "type":message.communicationType
+          "type":message.communicationType,
+          "sendHeader":message.header || ''
         };
 
         // 发送给个人

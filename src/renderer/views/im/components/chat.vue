@@ -516,7 +516,6 @@
       didScroll:function () {
         let self=this;
         let div = document.getElementById('message-box');
-        console.log(self.pageNo);
         if(div.scrollTop == 0 && self.isHaveMore){
           self.pageNo++;
           let data={
@@ -830,7 +829,6 @@
           return this.$store.state.messageList;
         },
         set: function(messageList) {
-          console.log(messageList);
           this.$store.commit('setMessageList', messageList);
         }
       },

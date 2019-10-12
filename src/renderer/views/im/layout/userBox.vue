@@ -114,7 +114,6 @@
       /* 获取好友列表 */
       getMyFriends:function (userId) {
         let self=this;
-        console.log(userId);
         let formData = new FormData();
         // 请求参数 ('key',value)
         formData.set('userId', userId);
@@ -131,7 +130,6 @@
             console.log(json.friends);
             self.$store.commit('setUserFriendList', json.friends);
             self.userFriendList=json.friends;
-            console.log(self.userFriendList);
           })
           .catch((error) => {
             console.log(error)
@@ -170,8 +168,6 @@
             self.userFriend=data;
             self.isClick=true;
             self.isApplyList=false;
-            console.log(data);
-            console.log(userItem);
             if(userItem.friAppUserRealName){
                 self.showChat();
             }
@@ -243,6 +239,18 @@
         let self = this;
         let user=self.userFriend;
         user['fromRealName'] = self.user.userName;
+        let message={
+          "communicationType":'p2p',
+          "content":'我们成为好友了',
+          "from":self.user.userId,
+          "fromRealName":self.user.userName,
+          "to":self.userFriend.friendId,
+          "date":"",
+          "msgId":"",
+          "color":"17c295",
+          "header":self.user.headImg
+        };
+        self.$store.commit('sendMessage', message);
         let chat = ChatListUtils.resetChatList(self, user, conf.getHostUrl(), 'p2p');
         self.$router.push({
           path: '/index/chatBox',
@@ -257,8 +265,7 @@
     created: function() {
       let self=this;
       self.user = self.$store.state.user.userId ? self.$store.state.user :JSON.parse(sessionStorage.getItem("user"));
-      console.log(self.user);
-      self.getMyFriends(self.user.userId);
+      /*self.getMyFriends(self.user.userId);*/
     },
     activated: function() {
       let self = this;
