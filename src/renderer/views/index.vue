@@ -148,6 +148,14 @@ export default {
     self.getMyFriends(self.user.userId);
   },
   mounted: function() {
+    window.addEventListener("dragover", e => {
+      e = e || event;
+      e.preventDefault()
+    }, false);
+    window.addEventListener("drop", e => {
+      e = e || event;
+      e.preventDefault()
+    }, false);
     /*let self = this;
     let websocketHeartbeatJs = new WebsocketHeartbeatJs({
       url: conf.getWsUrl()

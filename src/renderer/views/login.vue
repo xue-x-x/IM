@@ -108,7 +108,16 @@
           });
       },
     },
-
+    mounted: function() {
+      window.addEventListener("dragover", e => {
+        e = e || event;
+        e.preventDefault()
+      }, false);
+      window.addEventListener("drop", e => {
+        e = e || event;
+        e.preventDefault()
+      }, false);
+    }
   }
 </script>
 
