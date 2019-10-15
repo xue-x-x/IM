@@ -16,7 +16,7 @@
                     </li>
                     <li class="chat-records-li" :class="{'chat-mine': item.sendRealName == user.userName}" v-for="(item,index) in messageList" :key="index">
                         <div class="chat-user">
-                            <img v-if="item.sendHeader" preview="" :src="url+item.sendHeader" alt="">
+                            <img v-if="item.sendHeader" :preview="index" :src="url+item.sendHeader" alt="">
                             <div v-else-if="item.sendRealName == user.userName">{{item.sendRealName.slice(-2)}}</div>
                             <div v-else="">{{item.remark && item.remark.slice(-2) || item.sendRealName.slice(-2)}}</div>
                             <cite v-if="item.sendRealName != user.userName">{{item.remark || item.sendRealName}}<i>{{item.pubTime}}</i></cite>
@@ -47,6 +47,7 @@
                     <Faces v-show="showFace"  @click="showFace = true" class="insertFace" @insertFace="insertFace"></Faces>
                     <div class="uload">
                         <Upload :action="action" name="files"
+                                :accept="'image/*'"
                                 :format="imgFormat"
                                 :show-upload-list="false"
                                 :headers="headers"
@@ -78,7 +79,8 @@
                 </div>
                 <div class="chat-tool-textarea">
                     <!--<textarea v-model="messageContent" @keyup.enter="mineSend()"></textarea>-->
-                    <div class="chat-tool-text" v-html="messageContent" contenteditable="true" @click="closeFaceBox" @blur="changeText"></div>
+                    <div class="chat-tool-text" ref="msg" v-html="messageContent" contenteditable="true" @click="closeFaceBox" @blur="changeText" @keydown.ctrl.enter="lineFeed($event)" @keydown.enter.exact.prevent="mineSend($event)"></div>
+                    <!--<div class="chat-tool-text" ref="msg" v-html="messageContent" contenteditable="true" @click="closeFaceBox" @blur="changeText"></div>-->
                 </div>
                 <div class="chat-tool-send" @click="mineSend">发送</div>
             </div>
@@ -203,8 +205,8 @@
     </div>
 </template>
 
-<script>0
-  const { imageLoad, transform, ChatListUtils } = require('../utils/chatUtils');
+<script>
+  const { imageLoad, transform, ChatListUtils, browserType } = require('../utils/chatUtils');
   import conf from '../conf'
   import Faces from './faces.vue';
   import maudio from './audio.vue';
@@ -496,11 +498,13 @@
       //确认发送文档
       ok:function(){
         let self=this;
+        console.log(self.modalUrl);
+        console.log(self.modalName);
         console.log(self.$store.state.user);
         let currentUser = self.user;
         let currentMessage = {
           "communicationType":self.userItem.type,
-          "content":'rrtFile?'+self.url+self.modalUrl,
+          "content":'rrtFile?<a href="'+self.url+self.modalUrl+'">'+self.modalName+'</a>',
           "from":currentUser.userId,
           "fromRealName":currentUser.userName,
           "to":self.userItem.id,
@@ -510,6 +514,7 @@
           "header":currentUser.headImg
         };
         let content='rrtFile?'+self.url+self.modalUrl;
+        console.log(currentMessage);
         self.send(currentMessage);
       },
       /* 下拉加载更多 */
@@ -648,8 +653,8 @@
         lastEditRange = selection.getRangeAt(0)
       },
       //表情转换
-      transition:function () {
-        var msg1=this.messageContent;
+      transition:function (n) {
+        var msg1=n;
         var emojiPath=this.url+"/im/emoj/";
         var json = '[{"title":"微笑","src":"<img src=\''+emojiPath+'j_0001.gif\'>"},{"title":"憋嘴","src":"<img src=\''+emojiPath+'j_0002.gif\'>"},{"title":"色","src":"<img src=\''+emojiPath+'j_0003.gif\'>"},{"title":"发呆","src":"<img src=\''+emojiPath+'j_0004.gif\'>"},{"title":"得意","src":"<img src=\''+emojiPath+'j_0005.gif\'>"},{"title":"流泪","src":"<img src=\''+emojiPath+'j_0006.gif\'>"},{"title":"害羞","src":"<img src=\''+emojiPath+'j_0007.gif\'>"},{"title":"闭嘴","src":"<img src=\''+emojiPath+'j_0008.gif\'>"},{"title":"睡","src":"<img src=\''+emojiPath+'j_0009.gif\'>"},{"title":"大哭","src":"<img src=\''+emojiPath+'j_0010.gif\'>"},{"title":"尴尬","src":"<img src=\''+emojiPath+'j_0011.gif\'>"},{"title":"发怒","src":"<img src=\''+emojiPath+'j_0012.gif\'>"},{"title":"调皮","src":"<img src=\''+emojiPath+'j_0013.gif\'>"},{"title":"呲牙","src":"<img src=\''+emojiPath+'j_0014.gif\'>"},{"title":"惊讶","src":"<img src=\''+emojiPath+'j_0015.gif\'>"},{"title":"难过","src":"<img src=\''+emojiPath+'j_0016.gif\'>"},{"title":"酷","src":"<img src=\''+emojiPath+'j_0017.gif\'>"},{"title":"冷汗","src":"<img src=\''+emojiPath+'j_0018.gif\'>"},{"title":"抓狂","src":"<img src=\''+emojiPath+'j_0019.gif\'>"},{"title":"吐","src":"<img src=\''+emojiPath+'j_0020.gif\'>"},{"title":"偷笑","src":"<img src=\''+emojiPath+'j_0021.gif\'>"},{"title":"愉快","src":"<img src=\''+emojiPath+'j_0022.gif\'>"},{"title":"白眼","src":"<img src=\''+emojiPath+'j_0023.gif\'>"},{"title":"傲慢","src":"<img src=\''+emojiPath+'j_0024.gif\'>"},{"title":"饥饿","src":"<img src=\''+emojiPath+'j_0025.gif\'>"},{"title":"困","src":"<img src=\''+emojiPath+'j_0026.gif\'>"},{"title":"惊恐","src":"<img src=\''+emojiPath+'j_0027.gif\'>"},{"title":"流汗","src":"<img src=\''+emojiPath+'j_0028.gif\'>"},{"title":"憨笑","src":"<img src=\''+emojiPath+'j_0029.gif\'>"},{"title":"悠闲","src":"<img src=\''+emojiPath+'j_0030.gif\'>"},{"title":"奋斗","src":"<img src=\''+emojiPath+'j_0031.gif\'>"},{"title":"咒骂","src":"<img src=\''+emojiPath+'j_0032.gif\'>"},{"title":"疑问","src":"<img src=\''+emojiPath+'j_0033.gif\'>"},{"title":"嘘","src":"<img src=\''+emojiPath+'j_0034.gif\'>"},{"title":"晕","src":"<img src=\''+emojiPath+'j_0035.gif\'>"},{"title":"疯了","src":"<img src=\''+emojiPath+'j_0036.gif\'>"},{"title":"衰","src":"<img src=\''+emojiPath+'j_0037.gif\'>"},{"title":"骷髅","src":"<img src=\''+emojiPath+'j_0038.gif\'>"},{"title":"敲打","src":"<img src=\''+emojiPath+'j_0039.gif\'>"},{"title":"再见","src":"<img src=\''+emojiPath+'j_0040.gif\'>"},{"title":"擦汗","src":"<img src=\''+emojiPath+'j_0041.gif\'>"},{"title":"抠鼻","src":"<img src=\''+emojiPath+'j_0042.gif\'>"},{"title":"鼓掌","src":"<img src=\''+emojiPath+'j_0043.gif\'>"},{"title":"糗大了","src":"<img src=\''+emojiPath+'j_0044.gif\'>"},{"title":"坏笑","src":"<img src=\''+emojiPath+'j_0045.gif\'>"},{"title":"左哼哼","src":"<img src=\''+emojiPath+'j_0046.gif\'>"},{"title":"右哼哼","src":"<img src=\''+emojiPath+'j_0047.gif\'>"},{"title":"哈欠","src":"<img src=\''+emojiPath+'j_0048.gif\'>"},{"title":"鄙视","src":"<img src=\''+emojiPath+'j_0049.gif\'>"},{"title":"委屈","src":"<img src=\''+emojiPath+'j_0050.gif\'>"},{"title":"快哭了","src":"<img src=\''+emojiPath+'j_0051.gif\'>"},{"title":"阴险","src":"<img src=\''+emojiPath+'j_0052.gif\'>"},{"title":"亲亲","src":"<img src=\''+emojiPath+'j_0053.gif\'>"},{"title":"吓","src":"<img src=\''+emojiPath+'j_0054.gif\'>"},{"title":"可怜","src":"<img src=\''+emojiPath+'j_0055.gif\'>"},{"title":"菜刀","src":"<img src=\''+emojiPath+'j_0056.gif\'>"},{"title":"西瓜","src":"<img src=\''+emojiPath+'j_0057.gif\'>"},{"title":"啤酒","src":"<img src=\''+emojiPath+'j_0058.gif\'>"},{"title":"篮球","src":"<img src=\''+emojiPath+'j_0059.gif\'>"},{"title":"乒乓","src":"<img src=\''+emojiPath+'j_0060.gif\'>"}]';
         json = eval('('+ json +')');
@@ -691,8 +696,6 @@
       },
       handleSuccess(res, file) {
         let self = this;
-        console.log(res);
-        console.log(file);
         if (res.result == 1) {
           let path = res.attachmentPath;
           let fileName = file.name;
@@ -711,6 +714,10 @@
 //            this.messageContent = this.messageContent + '<img class="message-img" src="'+self.url+path+'" style="max-width: 160px">';
             this.messageContent = this.messageContent + '<img class="message-img" preview="1" src="'+self.url+path+'" style="max-width: 160px">';
             console.log(this.messageContent);
+            let input=document.querySelectorAll('.chat-tool-text')[0];
+            setTimeout(function () {
+              self.keepLastIndex(self.$refs.msg);
+            },100)
           }
           this.$Loading.finish();
         } else {
@@ -721,18 +728,50 @@
         this.$Loading.finish();
         this.$Message.error('上传错误！');
       },
+      //Ctr+Enter换行
+      lineFeed:function (event) {
+        let innerHTML=document.querySelectorAll('.chat-tool-text')[0];
+        if (browserType() == "IE" || browserType() == "Edge") {
+          innerHTML.append("<div></div>");
+        }
+        else if (browserType() == "FF") {
+          innerHTML.append("<br/><br/>");
+        } else {
+          innerHTML.append("<div><br/></div>");
+        }
+      },
+      //在尾部添加光标
+      keepLastIndex(obj) {
+        if (window.getSelection) {
+          //ie11 10 9 ff safari
+          obj.focus(); //解决ff不获取焦点无法定位问题
+          var range = window.getSelection(); //创建range
+          console.log(obj);
+          range.selectAllChildren(obj); //range 选择obj下所有子内容
+          range.collapseToEnd(); //光标移至最后
+        } else if (document.selection) {
+          //ie10 9 8 7 6 5
+          var range = document.selection.createRange(); //创建选择对象
+          //var range = document.body.createTextRange();
+          range.moveToElementText(obj); //range定位到obj
+          range.collapse(false); //光标移至最后
+          range.select();
+        }
+      },
       // 本人发送信息
-      mineSend() {
+      mineSend(event) {
         let self = this;
         let currentUser = self.user;
-        let content = self.messageContent;
+        let innerHTML=event.target.innerHTML == '发送' ? '' : event.target.innerHTML;
+        let content = self.messageContent || innerHTML;
+        console.log(content);
         if (content !== '' && content !== '\n') {
           if (content.length > 2000) {
             self.openMessage('不能超过2000个字符');
           } else {
             let currentMessage = {
               "communicationType":self.userItem.type,
-              "content":self.transition(),
+              "content":self.transition(content),
               "from":currentUser.userId,
               "fromRealName":currentUser.userName,
               "to":self.userItem.id,
@@ -741,9 +780,9 @@
               "color":"17c295",
               "header":currentUser.headImg
             };
-            console.log(self.messageList);
             console.log(currentMessage);
             self.send(currentMessage);
+            event.target.innerHTML=event.target.innerHTML == '发送' ? event.target.innerHTML : '';
           }
         }
       },
@@ -826,6 +865,7 @@
     computed: {
       messageList: {
         get: function() {
+          this.$previewRefresh() ;
           return this.$store.state.messageList;
         },
         set: function(messageList) {
