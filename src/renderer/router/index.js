@@ -4,6 +4,7 @@ import UserBox from '../views/im/layout/userBox.vue';
 import ChatBox from '../views/im/layout/chatBox.vue';
 import ChatGroupBox from '../views/im/layout/chatGroupBox.vue';
 import organization from '../views/im/layout/organization.vue';
+import backstage from '../views/im/layout/backstage.vue';
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ export default new Router({
           path: 'organization',
           name: 'organization',
           component: organization
+        },
+        {
+          path: 'backstage',
+          name: 'backstage',
+          component: backstage
         }
       ]
     },

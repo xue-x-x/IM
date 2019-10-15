@@ -265,7 +265,6 @@
     created: function() {
       let self=this;
       self.user = self.$store.state.user.userId ? self.$store.state.user :JSON.parse(sessionStorage.getItem("user"));
-      /*self.getMyFriends(self.user.userId);*/
     },
     activated: function() {
       let self = this;

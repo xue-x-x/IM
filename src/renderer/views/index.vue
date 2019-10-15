@@ -27,7 +27,10 @@
                     </router-link>
                 </li>
                 <li>
-                    <Icon @click="openURL" type="ios-settings-outline" />
+                    <router-link v-bind:to="'/index/backstage'">
+                        <Icon type="ios-settings-outline" />
+                    </router-link>
+                    <!--<Icon @click="openURL" type="ios-settings-outline" />-->
                 </li>
             </ul>
         </div>
