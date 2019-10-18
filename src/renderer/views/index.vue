@@ -76,6 +76,7 @@ import { fetchPost, logout } from './im/utils/chatUtils';
 import conf from './im/conf';
 import WebsocketHeartbeatJs from './im/utils/WebsocketHeartbeatJs.js';
 import winControl from '../../main/windowControl.js';
+const shell = require('electron').shell;
 export default {
   data() {
     return {
@@ -143,7 +144,7 @@ export default {
           console.log(error);
 
         });
-    }
+    },
   },
   created: function() {
     let self=this;
@@ -159,11 +160,8 @@ export default {
       e = e || event;
       e.preventDefault()
     }, false);
-    /*let self = this;
-    let websocketHeartbeatJs = new WebsocketHeartbeatJs({
-      url: conf.getWsUrl()
-    });
-    self.$store.commit('setWebsocket', websocketHeartbeatJs);*/
+    console.log(shell);
+//    shell.openItem('D:\\Downloads\\新建+DOC+文档.doc');
   }
 };
 </script>

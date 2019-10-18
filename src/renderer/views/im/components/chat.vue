@@ -24,7 +24,7 @@
                         </div>
                         <div v-if="!item.remark1.type" class="chat-text">
                             <!--<pre v-html="item.remark1" v-on:click="openImageProxy($event)"></pre>-->
-                            <pre v-html="item.remark1"></pre>
+                            <pre v-html="item.remark1" @click="preClick($event,item.remark1)"></pre>
                         </div>
                         <div v-else="" class="chat-text">
                             <pre><maudio :src="item.remark1.url" :time="item.remark1.time"></maudio></pre>
@@ -210,7 +210,12 @@
   import conf from '../conf'
   import Faces from './faces.vue';
   import maudio from './audio.vue';
+  import StreamDownload from '../utils/StreamDownload';
   import addGroupMember from './addGroupMember.vue';
+  import * as path from 'path';
+  import * as fs from 'fs';
+  const shell = require('electron').shell;
+
 //  import WebsocketHeartbeatJs from '../utils/WebsocketHeartbeatJs.js';
   export default {
     components: {
@@ -262,6 +267,9 @@
         addFriend:false,
         deleteFriend:false,
         modal_loading:false,
+        //文件地址
+        baseDir:'',
+        folderName:'tmp',
       }
     },
     methods: {
@@ -504,7 +512,8 @@
         let currentUser = self.user;
         let currentMessage = {
           "communicationType":self.userItem.type,
-          "content":'rrtFile?<a href="'+self.url+self.modalUrl+'">'+self.modalName+'</a>',
+//          "content":'rrtFile?<a href="'+self.url+self.modalUrl+'">'+self.modalName+'</a>',
+          "content":'rrtFile?'+self.url+self.modalUrl+'?'+self.modalName,
           "from":currentUser.userId,
           "fromRealName":currentUser.userName,
           "to":self.userItem.id,
@@ -858,6 +867,51 @@
             console.log(error)
           });
       },
+      //文件点击
+      preClick:function (event,n) {
+        if(!n.includes('rrtFile')) return false;
+        let href=event.toElement.innerText.split('?')[0];
+        let name=event.toElement.innerText.split('?')[1];
+        this.judgePath(href,name);
+      },
+      judgePath:function (href,name) {
+        let self=this;
+        fs.access(self.baseDir, fs.constants.F_OK, (err) => {
+          if(err){
+            fs.mkdir(self.folderName,function(err){
+              if (err) {
+                return console.error(err);
+              }else {
+                self.fileDownload(href,name);
+              }
+            });
+          }else {
+            self.fileDownload(href,name);
+          }
+        });
+      },
+      //文件下载
+      fileDownload:function (href,name) {
+        let baseDir=this.baseDir;
+        console.log(baseDir);
+        fs.access(path.join(baseDir, name), fs.constants.F_OK, (err) => {
+          if(err){
+            StreamDownload.downloadFile(href,name, baseDir, this.downloadFileCallback)
+          }{
+            shell.openItem(baseDir+name);
+          }
+        });
+      },
+      downloadFileCallback:function (arg,name) {
+        console.log(arg);
+        if (arg === "finished")
+        {
+          shell.openItem(this.baseDir+name);
+//          console.log('D:\\Downloads\\'+name);
+//          shell.openItem('D:\\Downloads\\新建 DOC 文档.doc');
+//          shell.openItem('D:\\Downloads\\'+name);
+        }
+      }
     },
     component: {
       //someComponent
@@ -892,30 +946,7 @@
     watch: {
       // 监听每次 user 的变化
       userItem: function(val) {
-        console.log(val);
-        /*let self = this;
-        self.messageList = [];
-        // 从内存中取聊天信息
-        let cacheMessages = self.$store.state.messageListMap.get(self.chat.id);
-        if (cacheMessages.list) {
-          self.messageList = cacheMessages.list;
-        }*/
-        // 每次滚动到最底部
-        /*this.$nextTick(() => {
-          imageLoad('message-box');
-        });*/
-        /*if (self.chat.type === '1') {
-          let param = new FormData();
-          param.set('chatId', self.chat.id);
-          fetchPost(
-            conf.getChatUsersUrl(),
-            param,
-            function(json) {
-              self.userList = json;
-            },
-            self
-          );
-        }*/
+
       }
     },
     mounted: function() {
@@ -924,6 +955,9 @@
         imageLoad('message-box');
       });
       this.action=conf.getUploadingUrl();
+//      this.judgePath();
+      let cwd=process.cwd();
+      this.baseDir=cwd+'\\'+this.folderName+'\\';
     }
   }
 </script>

@@ -395,11 +395,11 @@
       websocketHeartbeatJs.onmessage = function(event) {
         let data = event.data;
         let sendInfo = JSON.parse(data);
-        console.log(sendInfo);
         // 真正的消息类型
         winControl.flashIcon();
         let message = sendInfo.data;
-        if(!message || sendInfo.msg.indexOf('已读') != -1) return false;
+        let err = sendInfo.err;
+        if(!err || sendInfo.msg.indexOf('已读') != -1) return false;
         /*let content=message.content;
         content=transform(content);*/
         let newList={

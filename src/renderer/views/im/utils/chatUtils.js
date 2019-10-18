@@ -168,9 +168,7 @@ export function excludeSpecial(content) {
 }
 
 export function transform(content) {
-  let type='',
-    href='',
-    time='';
+  let type, href, time;
   if(typeof content == 'string'){
     content = content.replace(/[\'\\\n\r\t]/g, '');
     type=content.split('?')[0];
@@ -182,7 +180,12 @@ export function transform(content) {
     time=content.time;
   }
   if(type == 'rrtFile'){
-    return '<i class="ivu-icon ivu-icon-md-arrow-down"></i>'+href+'';
+    return '<div style="color: #54a0ff;cursor: pointer;position: relative">' +
+      '<i class="ivu-icon ivu-icon-md-arrow-down rrtFile"></i>' +
+      '<span>'+time+'</span>' +
+      '<div style="position: absolute;top: 0;right: 0;bottom: 0;left: 0;opacity: 0">'+href+'?'+time+'</div>' +
+      '</div>';
+    // return '<i class="ivu-icon ivu-icon-md-arrow-down"></i>'+href+'';
   }else if(type == 'rrtaudio'){
     // return '<Maudio src="'+href+'"></Maudio>'
     return {
