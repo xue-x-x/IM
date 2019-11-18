@@ -15,7 +15,10 @@
                             <div class="groupIcon" v-else=""><Icon type="ios-people" /></div>
                             <div v-if="item.unReadCount" class="unReadCount">{{item.unReadCount}}</div>
                         </div>
-                        <div>{{item.remark || item.realName}}</div>
+                        <div :class="{'li-img-name':item.msg}">
+                            <p>{{item.remark || item.realName}}</p>
+                            <p class="fs-14">{{item.msg}}</p>
+                        </div>
                     </li>
                 </ul>
 
@@ -174,7 +177,8 @@
           "color":""
         };
         if(n.unReadCount){
-          self.$store.commit('sendMessage', data);
+//          self.$store.commit('sendMessage', data);
+          self.setReaded(n.id,n.type,data);
         }
         chatList.map(function (item) {
           item.pitchOn=false;
@@ -210,9 +214,33 @@
           "color":""
         };
         if(n.unReadCount){
-          self.$store.commit('sendMessage', data);
+//          self.$store.commit('sendMessage', data);
+          self.setReaded(n.id,n.type,data);
         }
         self.currentChat = n;
+      },
+      /* 设置成已读 */
+      setReaded:function (otherId,type,data) {
+        let self=this;
+        let formData = new FormData();
+        formData.set('userId', self.user.userId);
+        formData.set('otherId', otherId);
+        formData.set('type', type);
+        fetch(conf.setReadedUrl(), {
+          method: 'POST',
+          model: 'cros', //跨域
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+          .then(response => response.json())
+          .then(json => {
+            self.$store.commit('sendMessage', data);
+          })
+          .catch((error) => {
+            console.log(error)
+          });
       },
       /* 查看更多 */
       didScroll:function (n) {
@@ -240,6 +268,7 @@
           .then(json => {
             let data=Object.assign(json,userItem);
             self.userItem=data;
+            console.log(self.userItem);
           })
           .catch((error) => {
             console.log(error)
@@ -373,6 +402,26 @@
       this.$nextTick(() => {
         imageLoad('message-box');
       });
+
+      //全部信息标记已读
+      let data={};
+      self.chatList.forEach((item)=>{
+        //执行代码
+        if(item.unReadCount){
+          console.log(item);
+          data={
+            "communicationType":"readed",
+            "content":item.type,
+            "from":item.id,
+            "fromRealName":item.remark || item.realName,
+            "to":self.user.userId,
+            "date":"",
+            "msgId":"",
+            "color":""
+          };
+          self.setReaded(item.id,item.type,data);
+        }
+      })
     },
     created: function() {
       let self=this;
@@ -395,6 +444,7 @@
       websocketHeartbeatJs.onmessage = function(event) {
         let data = event.data;
         let sendInfo = JSON.parse(data);
+        console.log(sendInfo);
         // 真正的消息类型
         winControl.flashIcon();
         let message = sendInfo.data;
@@ -425,7 +475,6 @@
             self.chatList[0].pitchOn=true;
           } else {
             self.$store.commit('setUnReadCount', newList);
-
           }
         } else if (message.communicationType === MessageTargetType.CHAT_GROUP) {
           // message.avatar = self.$store.state.chatMap.get(message.id);
@@ -443,7 +492,9 @@
             self.$store.commit('setUnReadCount', newList);
           }
         }
-        winControl.flashFrame();
+        if(String(message.from) !== String(self.user.userId)){
+          winControl.flashFrame();
+        }
         self.$store.commit('setLastMessage', newList);
         // 每次滚动到最底部
         self.$nextTick(() => {
@@ -497,9 +548,8 @@
         width: 100%;
         position: relative;
         padding: 10px 10px 10px 60px;
-        line-height: 40px;
         font-size: 15px;
-
+        line-height: 40px;
         .li-img{
             position: absolute;
             top:50%;
@@ -507,6 +557,7 @@
             transform: translate(0,-50%);
             width: 45px;
             height: 45px;
+            line-height: 45px;
             img{
                 width: 100%;
                 height: 100%;
@@ -543,6 +594,14 @@
                 text-align: center;
                 font-size: 10px;
                 color: #fff;
+            }
+        }
+        .li-img-name{
+            height: 40px;
+            line-height: 20px;
+            .fs-14{
+                font-size: 14px;
+                color: #999;
             }
         }
     }

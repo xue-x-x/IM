@@ -106,7 +106,11 @@ export default {
     showChat: function() {
       let self = this;
       let user=self.userFriend;
-      console.log(self.user);
+      if(user.userId == self.user.userId){
+        this.$Message.warning('不可以和本人聊天');
+        return
+      }
+
       user['fromRealName'] = self.user.userName;
 //      user['isUserClick'] = true;
       let chat = ChatListUtils.resetChatList(self, user, conf.getHostUrl(), 'p2p');

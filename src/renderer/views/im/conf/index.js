@@ -33,6 +33,7 @@ export default {
   showApplyList:'/info/phone/showApplyList',
   doFriendApply:'/info/phone/doFriendApply',
   getToken:'/info/phone/getToken',
+  setReaded:'/info/phone/mchat/setReaded',
   ws_protocol: 'ws',
   url: 'http://58.218.203.29',
   // url: 'http://192.168.1.184',
@@ -144,6 +145,10 @@ export default {
   //获取Token
   getTokenUrl: function() {
     return this.getHostUrl() + this.getToken;
+  },
+  //设置成已读
+  setReadedUrl: function() {
+    return this.getHostUrl() + this.setReaded;
   },
   getInitUrl: function() {
     return this.getHostUrl() + this.init;

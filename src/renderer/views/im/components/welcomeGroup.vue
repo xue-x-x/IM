@@ -7,7 +7,7 @@
             </div>
             <div class="group-people-list">
                 <ul class="list-ul">
-                    <li class="list-li" v-for="(item,index) in groupInfo.groupPeopleList">
+                    <li class="list-li" v-for="(item,index) in groupInfo.groupPeopleList" @click="showUserChat(item)">
                         <div class="li-header">
                             <img v-if="item.header" :src="url+item.header" alt="">
                             <div v-else="">{{item.realName.slice(-2)}}</div>
@@ -46,10 +46,10 @@ export default {
     };
   },
   methods: {
-    // 打开一个聊天对话框
+    // 打开一个群聊天对话框
     showChat: function() {
       let self = this;
-      let user=self.groupInfo;
+      let user = self.groupInfo;
       console.log(user);
       let chatList = ChatListUtils.getChatList(self.$store.state.user.id);
       // 删除当前用户已经有的会话
@@ -71,7 +71,44 @@ export default {
         path: '/index/chatBox',
         query: { chat: chat }
       });
-    }
+    },
+    //打开一个群员对话
+    showUserChat:function (n) {
+      let self=this;
+      let userItem=n;
+      if(userItem.userId == self.user.userId){
+        this.$Message.warning('不可以和本人聊天');
+        return
+      }
+      let formData = new FormData();
+      formData.set('userId', self.user.userId);
+      formData.set('otherId', userItem.userId);
+
+      fetch(conf.getPersonCardInfoUrl(), {
+        method: 'POST',
+        model: 'cros', //跨域
+        headers: {
+          Accept: 'application/json'
+        },
+        body: formData
+      })
+        .then(response => response.json())
+        .then(json => {
+          let data=Object.assign(json,userItem);
+          data['fromRealName'] = self.user.userName;
+          data['friendId'] = data.userId;
+
+          let chat = ChatListUtils.resetChatList(self, data, conf.getHostUrl(), 'p2p');
+          self.$router.push({
+            path: '/index/chatBox',
+            query: { chat: chat }
+          });
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+    },
+
   },
   mounted: function() {
 

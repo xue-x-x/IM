@@ -185,6 +185,7 @@ export default new Vuex.Store({
           tempChatList.push(chat);
         }
       }
+      console.log(tempChat);
       // 聊天列表没有此人的chat
       if (!tempChat.id && message.communicationType === MessageTargetType.FRIEND) {
         tempChat = new Chat(message.from, message.fromRealName, message.fromRealName,  message.content, MessageTargetType.FRIEND, message.date);

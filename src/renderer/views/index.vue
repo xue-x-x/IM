@@ -7,7 +7,7 @@
                     <div v-else="">{{user.userName.slice(-2)}}</div>
                 </li>
                 <li>
-                    <router-link v-bind:to="'/index/chatBox'">
+                    <router-link v-bind:to="{path:'/index/chatBox',query:{from:'index'}}">
                         <Icon type="ios-text-outline"/>
                     </router-link>
                 </li>

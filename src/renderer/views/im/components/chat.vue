@@ -16,7 +16,7 @@
                     </li>
                     <li class="chat-records-li" :class="{'chat-mine': item.sendRealName == user.userName}" v-for="(item,index) in messageList" :key="index">
                         <div class="chat-user">
-                            <img v-if="item.sendHeader" :preview="index" :src="url+item.sendHeader" alt="">
+                            <img v-if="item.sendHeader" :preview="item.sendHeader+index" :src="url+item.sendHeader" alt="">
                             <div v-else-if="item.sendRealName == user.userName">{{item.sendRealName.slice(-2)}}</div>
                             <div v-else="">{{item.remark && item.remark.slice(-2) || item.sendRealName.slice(-2)}}</div>
                             <cite v-if="item.sendRealName != user.userName">{{item.remark || item.sendRealName}}<i>{{item.pubTime}}</i></cite>
@@ -41,7 +41,7 @@
                     </li>-->
                 </ul>
             </div>
-            <div class="chat-tool">
+            <div class="chat-tool" v-if="userItem.id != 'system'">
                 <div class="chat-tool-title">
                     <Icon type="ios-happy-outline" @click="showFaceBox()" title="表情"/>
                     <Faces v-show="showFace"  @click="showFace = true" class="insertFace" @insertFace="insertFace"></Faces>
