@@ -1,5 +1,5 @@
 export default {
-  app_name: 'V-IM',
+  app_name: '辛巴-IM',
   http_protocol: 'http',
   http_port: 8088,
   ws_port: 2525,

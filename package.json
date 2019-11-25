@@ -1,5 +1,5 @@
 {
-  "name": "im",
+  "name": "xinba-IM",
   "version": "0.0.1",
   "author": "xue <1259996266@qq.com>",
   "description": "An electron-vue project",
@@ -17,7 +17,7 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "im",
+    "productName": "辛巴-IM",
     "appId": "com.example.yourapp",
     "directories": {
       "output": "build"

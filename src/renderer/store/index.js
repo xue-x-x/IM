@@ -90,6 +90,8 @@ export default new Vuex.Store({
       message.remark1 = transform(message.remark1);
       state.messageList.push(message);
       state.messageListMap.set(message.receiveUserId, state.messageList);
+      // 放入缓存
+      ChatListUtils.setChatList(state.user.id, state.chatList);
     },
     // 在用户姓名下展示收到的最后一条信息
     setLastMessage: function(state, message) {
@@ -113,7 +115,6 @@ export default new Vuex.Store({
       state.messageListMap = messageListMap;
     },
     addUnreadMessage: function(state, message) {
-      message.content = transform(message.content);
       if (message.type === 'p2p') {
         // 从内存中取聊天信息
         let cacheMessages = state.messageListMap.get(message.sendUserId);
@@ -166,7 +167,7 @@ export default new Vuex.Store({
       let tempChat = {};
       for (let chat of state.chatList) {
         // 给接受消息的聊天室未读数量 +1
-        if (String(chat.id) === String(message.sendUserId) && message.type === MessageTargetType.FRIEND) {
+        if (String(chat.id) === String(message.from) && message.communicationType === MessageTargetType.FRIEND) {
           if (!chat.unReadCount) {
             chat.unReadCount = 0;
           }
@@ -174,7 +175,7 @@ export default new Vuex.Store({
           tempChat = chat;
         }
         //群组聊天
-        else if (String(chat.id) === String(message.receiveUserId) && message.type === MessageTargetType.CHAT_GROUP) {
+        else if (String(chat.id) === String(message.to) && message.communicationType === MessageTargetType.CHAT_GROUP) {
           if (!chat.unReadCount) {
             chat.unReadCount = 0;
           }
@@ -185,14 +186,13 @@ export default new Vuex.Store({
           tempChatList.push(chat);
         }
       }
-      console.log(tempChat);
       // 聊天列表没有此人的chat
-      if (!tempChat.id && message.communicationType === MessageTargetType.FRIEND) {
-        tempChat = new Chat(message.from, message.fromRealName, message.fromRealName,  message.content, MessageTargetType.FRIEND, message.date);
-      } else if (!tempChat.id && message.communicationType === MessageTargetType.CHAT_GROUP) {
-        let groupChat = state.chatMap.get(message.id);
-        tempChat = new Chat(message.from, message.fromRealName, message.fromRealName,  message.content, MessageTargetType.FRIEND, message.date);
-      }
+      // if (!tempChat.id && message.communicationType === MessageTargetType.FRIEND) {
+      //   tempChat = new Chat(message.from, message.fromRealName, message.fromRealName,  message.content, MessageTargetType.FRIEND, message.date);
+      // } else if (!tempChat.id && message.communicationType === MessageTargetType.CHAT_GROUP) {
+      //   let groupChat = state.chatMap.get(message.id);
+      //   tempChat = new Chat(message.to, message.fromRealName, message.fromRealName,  message.content, MessageTargetType.FRIEND, message.date);
+      // }
       // 添加到聊天室列表的第一个
       tempChatList.unshift(tempChat);
       // 重新设置chatList
@@ -210,6 +210,7 @@ export default new Vuex.Store({
       let msgTop=[];
       let chatList=[];
       let tempChat = {};
+      console.log(state.chatList);
       for (let chat of state.chatList) {
         // 给接受消息的聊天室未读数量 +1
         if (String(chat.id) === String(message.receiveUserId)){
@@ -227,6 +228,8 @@ export default new Vuex.Store({
       if(msgTop.length)chatList=msgTop.concat(tempChatList);
       // 重新设置chatList
       state.chatList = chatList;
+      console.log(state.chatList);
+
       // 放入缓存
       ChatListUtils.setChatList(state.user.id, chatList);
     }

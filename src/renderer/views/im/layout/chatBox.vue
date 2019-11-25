@@ -16,8 +16,8 @@
                             <div v-if="item.unReadCount" class="unReadCount">{{item.unReadCount}}</div>
                         </div>
                         <div :class="{'li-img-name':item.msg}">
-                            <p>{{item.remark || item.realName}}</p>
-                            <p class="fs-14">{{item.msg}}</p>
+                            <p>{{item.remark || item.realName}}<span v-if="item.type == 'group'" class="group-span">群</span></p>
+                            <p class="fs-12">{{item.msg}}</p>
                         </div>
                     </li>
                 </ul>
@@ -268,7 +268,6 @@
           .then(json => {
             let data=Object.assign(json,userItem);
             self.userItem=data;
-            console.log(self.userItem);
           })
           .catch((error) => {
             console.log(error)
@@ -336,7 +335,7 @@
           .then(json => {
             self.isHaveMore=json.list.length >= 50 ? true : false;
             self.messageList=json.list.concat(self.messageList);
-            console.log(self.messageList);
+
             self.messageList.forEach((item,index,array)=>{
               item.remark1= item.remark1 ? transform(item.remark1) : item.remark1;
             });
@@ -408,7 +407,6 @@
       self.chatList.forEach((item)=>{
         //执行代码
         if(item.unReadCount){
-          console.log(item);
           data={
             "communicationType":"readed",
             "content":item.type,
@@ -421,7 +419,11 @@
           };
           self.setReaded(item.id,item.type,data);
         }
-      })
+      });
+      //刷新当前列表
+      if (self.$route.query.from == 'index') {
+        self.getMyChatLogList();
+      }
     },
     created: function() {
       let self=this;
@@ -446,7 +448,6 @@
         let sendInfo = JSON.parse(data);
         console.log(sendInfo);
         // 真正的消息类型
-        winControl.flashIcon();
         let message = sendInfo.data;
         let err = sendInfo.err;
         if(!err || sendInfo.msg.indexOf('已读') != -1) return false;
@@ -463,6 +464,29 @@
           "type":message.communicationType,
           "sendHeader":message.header || ''
         };
+        //修改列表msg信息
+        var msgId,chatList,msgContent;
+        if(String(message.from) === String(self.user.userId) || message.communicationType == "group"){
+          msgId=message.to;
+        }else {
+          msgId=message.from;
+        }
+        if(message.content.startsWith('rrtFile')){
+          msgContent='[文件]'
+        }else if (message.content.startsWith('rrtaudio')){
+          msgContent='[语音]'
+        }else if(message.content.includes('img')){
+          msgContent='[消息]'
+        }else {
+          msgContent=message.content;
+        }
+        chatList=self.chatList;
+        chatList.forEach((item,index)=>{
+          if(item.id == msgId){
+            chatList[index].msg=msgContent;
+          }
+        });
+        self.chatList=chatList;
 
         // 发送给个人
         if (message.communicationType === MessageTargetType.FRIEND) {
@@ -474,7 +498,19 @@
             self.$store.commit('changPlace', newList);
             self.chatList[0].pitchOn=true;
           } else {
-            self.$store.commit('setUnReadCount', newList);
+            let tempChat = {};
+            for (let chat of self.chatList) {
+              // 给接受消息的聊天室未读数量 +1
+              if (String(chat.id) === String(message.from)) {
+                tempChat = chat;
+              }
+            }
+            // 聊天列表没有此人的chat
+            if(!tempChat.id){
+              self.getMyChatLogList();
+              return;
+            }
+            self.$store.commit('setUnReadCount', message);
           }
         } else if (message.communicationType === MessageTargetType.CHAT_GROUP) {
           // message.avatar = self.$store.state.chatMap.get(message.id);
@@ -489,12 +525,29 @@
               self.chatList[0].pitchOn=true;
             }
           }else {
-            self.$store.commit('setUnReadCount', newList);
+            let tempGroupChat = {};
+            for (let chat of self.chatList) {
+              console.log(chat);
+              // 给接受消息的聊天室未读数量 +1
+              if (String(chat.id) === String(message.to)) {
+                tempGroupChat = chat;
+              }
+            }
+            // 聊天列表没有此群的chat
+            if(!tempGroupChat.id){
+              self.getMyChatLogList();
+              return;
+            }
+            self.$store.commit('setUnReadCount', message);
+            self.$store.commit('addUnreadMessage', newList);
           }
         }
+        //消息闪烁
         if(String(message.from) !== String(self.user.userId)){
+          winControl.flashIcon();
           winControl.flashFrame();
         }
+
         self.$store.commit('setLastMessage', newList);
         // 每次滚动到最底部
         self.$nextTick(() => {
@@ -596,11 +649,20 @@
                 color: #fff;
             }
         }
+        .group-span{
+            margin-left: 5px;
+            padding: 2px;
+            font-size: 10px;
+            color: #fff;
+            background-color: #22abec;
+            vertical-align: top;
+            border-radius: 4px;
+        }
         .li-img-name{
             height: 40px;
             line-height: 20px;
-            .fs-14{
-                font-size: 14px;
+            .fs-12{
+                font-size: 12px;
                 color: #999;
             }
         }

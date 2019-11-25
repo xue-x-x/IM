@@ -110,8 +110,17 @@ export default {
         this.$Message.warning('不可以和本人聊天');
         return
       }
-
+      if(!self.userFriend.friendId){
+        user={
+          friendId: self.userFriend.userId,
+          realName: self.userFriend.realName,
+          remark: self.bzName,
+          fromRealName: self.user.userName,
+          header: self.userFriend.header,
+        }
+      }
       user['fromRealName'] = self.user.userName;
+      console.log(user);
 //      user['isUserClick'] = true;
       let chat = ChatListUtils.resetChatList(self, user, conf.getHostUrl(), 'p2p');
       self.$router.push({
